@@ -231,14 +231,14 @@ void CheckVoltage(void)
     {
      
             ClrWdt();
-            UpdateLedState(ON_DIANYA_LED, TURN_ON);
-            UpdateLedState(OFF_CHUNENG_RELAY, TURN_OFF);        
+            UpdateIndicateState(ON_DIANYA_LED, TURN_ON);
+            UpdateIndicateState(OFF_CHUNENG_RELAY, TURN_OFF);        
     }
     else
     {
          ClrWdt();
-         UpdateLedState(OFF_DIANYA_LED, TURN_OFF);
-         UpdateLedState(ON_CHUNENG_RELAY, TURN_ON);
+         UpdateIndicateState(OFF_DIANYA_LED, TURN_OFF);
+         UpdateIndicateState(ON_CHUNENG_RELAY, TURN_ON);
     }
 }
 
@@ -268,9 +268,9 @@ uint8  CheckIOState(void)
             ClrWdt();      
 
             //合分位指示灯熄灭
-            UpdateLedState(OFF_HE_LED & OFF_FEN_LED, TURN_OFF);
+            UpdateIndicateState(OFF_HE_LED & OFF_FEN_LED, TURN_OFF);
             //故障指示灯亮，故障继电器得电动作
-            UpdateLedState(ON_ERROR_LED | ON_ERROR_RELAY , TURN_ON);
+            UpdateIndicateState(ON_ERROR_LED | ON_ERROR_RELAY , TURN_ON);
             
             checkOrder = 0;
 
@@ -292,10 +292,10 @@ uint8  CheckIOState(void)
         {
             ClrWdt();
             //合位指示灯亮
-            UpdateLedState(ON_HE_LED  , TURN_ON);
+            UpdateIndicateState(ON_HE_LED  , TURN_ON);
             
            //关闭分闸LED，故障LED,故障继电器
-            UpdateLedState(OFF_FEN_LED & OFF_ERROR_LED & OFF_ERROR_RELAY, TURN_OFF);
+            UpdateIndicateState(OFF_FEN_LED & OFF_ERROR_LED & OFF_ERROR_RELAY, TURN_OFF);
             
             
             checkOrder = 0;
@@ -307,9 +307,9 @@ uint8  CheckIOState(void)
         {
             ClrWdt();           
            //分位指示灯亮
-            UpdateLedState(ON_FEN_LED  , TURN_ON);            
+            UpdateIndicateState(ON_FEN_LED  , TURN_ON);            
            //关闭合位LED，故障LED,故障继电器
-            UpdateLedState(OFF_HE_LED & OFF_ERROR_LED & OFF_ERROR_RELAY, TURN_OFF);
+            UpdateIndicateState(OFF_HE_LED & OFF_ERROR_LED & OFF_ERROR_RELAY, TURN_OFF);
             checkOrder = 0;
 
             // *pstate = IDLE_ORDER;//解除闭锁
@@ -369,7 +369,7 @@ uint8 ContinuousCheckYuan(uint16* lastOrder)
                 if (i > 3000)
                 {
                     //打开错误指示灯与错误继电器
-                      UpdateLedState(ON_ERROR_LED & OFF_ERROR_RELAY, TURN_ON);
+                      UpdateIndicateState(ON_ERROR_LED & OFF_ERROR_RELAY, TURN_ON);
                 }
             }
              ClrWdt();
@@ -392,7 +392,7 @@ uint8 ContinuousCheckYuan(uint16* lastOrder)
             //持续3s认为是错误，进行错误处理
             if (i > 3000)
             {
-                UpdateLedState(ON_ERROR_LED & OFF_ERROR_RELAY, TURN_ON);
+                UpdateIndicateState(ON_ERROR_LED & OFF_ERROR_RELAY, TURN_ON);
             }
         }
         ClrWdt();
@@ -408,7 +408,7 @@ uint8 ContinuousCheckYuan(uint16* lastOrder)
             //持续3s认为是错误，进行错误处理
             if (i > 3000)
             {
-                UpdateLedState(ON_ERROR_LED & OFF_ERROR_RELAY, TURN_ON);
+                UpdateIndicateState(ON_ERROR_LED & OFF_ERROR_RELAY, TURN_ON);
             }
         }
         *lastOrder = IDLE_ORDER;

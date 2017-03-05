@@ -9,4 +9,5 @@ DevicdIO.h  \
 Usart.h  \
 AdcSample.h  \
 yongci.h  \
-SwtichCondition.h 
+SwtichCondition.h  \
+ CAN.h 

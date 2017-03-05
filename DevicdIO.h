@@ -160,5 +160,5 @@ void TurnOnInt0();
 void TurnOffInt0();
 
 void IP595_Out(uint8 state);
-void UpdateLedState(uint8 port, uint8 state);
+void  UpdateIndicateState(uint8 port, uint8 state);
 #endif

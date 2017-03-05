@@ -18,6 +18,8 @@
 #include "yongci.h"
 #include "SwtichCondition.h"
 
+#include "CAN.h"
+
 #define MAIN_ADDRESS    0xF0
 #define LOCAL_ADDRESS   0xA2 //双路调试控制板子地址
 

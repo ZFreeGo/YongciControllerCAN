@@ -10,4 +10,5 @@ Usart.h  \
 AdcSample.h  \
 yongci.h  \
  SwtichCondition.h  \
+CAN.h  \
 CRC16.h 

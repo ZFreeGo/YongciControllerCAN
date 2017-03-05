@@ -16,6 +16,7 @@
       <itemPath>tydef.h</itemPath>
       <itemPath>yongci.h</itemPath>
       <itemPath>DeviceParameter.h</itemPath>
+      <itemPath>../TestCAN.X/CAN.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -36,15 +37,18 @@
       <itemPath>traps.c</itemPath>
       <itemPath>yongci.c</itemPath>
       <itemPath>DeviceParameter.c</itemPath>
+      <itemPath>../TestCAN.X/CAN.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>ReadMe.txt</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
+    <Elem>../TestCAN.X</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

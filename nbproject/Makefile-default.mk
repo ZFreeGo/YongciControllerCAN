@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Action.c AdcSample.c CRC16.c DeviceIO.c RtuFrame.c SwtichCondition.c Timer.c Usart.c main.c traps.c yongci.c DeviceParameter.c
+SOURCEFILES_QUOTED_IF_SPACED=Action.c AdcSample.c CRC16.c DeviceIO.c RtuFrame.c SwtichCondition.c Timer.c Usart.c main.c traps.c yongci.c DeviceParameter.c ../TestCAN.X/CAN.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Action.o ${OBJECTDIR}/AdcSample.o ${OBJECTDIR}/CRC16.o ${OBJECTDIR}/DeviceIO.o ${OBJECTDIR}/RtuFrame.o ${OBJECTDIR}/SwtichCondition.o ${OBJECTDIR}/Timer.o ${OBJECTDIR}/Usart.o ${OBJECTDIR}/main.o ${OBJECTDIR}/traps.o ${OBJECTDIR}/yongci.o ${OBJECTDIR}/DeviceParameter.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/Action.o.d ${OBJECTDIR}/AdcSample.o.d ${OBJECTDIR}/CRC16.o.d ${OBJECTDIR}/DeviceIO.o.d ${OBJECTDIR}/RtuFrame.o.d ${OBJECTDIR}/SwtichCondition.o.d ${OBJECTDIR}/Timer.o.d ${OBJECTDIR}/Usart.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/traps.o.d ${OBJECTDIR}/yongci.o.d ${OBJECTDIR}/DeviceParameter.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Action.o ${OBJECTDIR}/AdcSample.o ${OBJECTDIR}/CRC16.o ${OBJECTDIR}/DeviceIO.o ${OBJECTDIR}/RtuFrame.o ${OBJECTDIR}/SwtichCondition.o ${OBJECTDIR}/Timer.o ${OBJECTDIR}/Usart.o ${OBJECTDIR}/main.o ${OBJECTDIR}/traps.o ${OBJECTDIR}/yongci.o ${OBJECTDIR}/DeviceParameter.o ${OBJECTDIR}/_ext/737697433/CAN.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Action.o.d ${OBJECTDIR}/AdcSample.o.d ${OBJECTDIR}/CRC16.o.d ${OBJECTDIR}/DeviceIO.o.d ${OBJECTDIR}/RtuFrame.o.d ${OBJECTDIR}/SwtichCondition.o.d ${OBJECTDIR}/Timer.o.d ${OBJECTDIR}/Usart.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/traps.o.d ${OBJECTDIR}/yongci.o.d ${OBJECTDIR}/DeviceParameter.o.d ${OBJECTDIR}/_ext/737697433/CAN.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Action.o ${OBJECTDIR}/AdcSample.o ${OBJECTDIR}/CRC16.o ${OBJECTDIR}/DeviceIO.o ${OBJECTDIR}/RtuFrame.o ${OBJECTDIR}/SwtichCondition.o ${OBJECTDIR}/Timer.o ${OBJECTDIR}/Usart.o ${OBJECTDIR}/main.o ${OBJECTDIR}/traps.o ${OBJECTDIR}/yongci.o ${OBJECTDIR}/DeviceParameter.o
+OBJECTFILES=${OBJECTDIR}/Action.o ${OBJECTDIR}/AdcSample.o ${OBJECTDIR}/CRC16.o ${OBJECTDIR}/DeviceIO.o ${OBJECTDIR}/RtuFrame.o ${OBJECTDIR}/SwtichCondition.o ${OBJECTDIR}/Timer.o ${OBJECTDIR}/Usart.o ${OBJECTDIR}/main.o ${OBJECTDIR}/traps.o ${OBJECTDIR}/yongci.o ${OBJECTDIR}/DeviceParameter.o ${OBJECTDIR}/_ext/737697433/CAN.o
 
 # Source Files
-SOURCEFILES=Action.c AdcSample.c CRC16.c DeviceIO.c RtuFrame.c SwtichCondition.c Timer.c Usart.c main.c traps.c yongci.c DeviceParameter.c
+SOURCEFILES=Action.c AdcSample.c CRC16.c DeviceIO.c RtuFrame.c SwtichCondition.c Timer.c Usart.c main.c traps.c yongci.c DeviceParameter.c ../TestCAN.X/CAN.c
 
 
 CFLAGS=
@@ -166,6 +166,13 @@ ${OBJECTDIR}/DeviceParameter.o: DeviceParameter.c  nbproject/Makefile-${CND_CONF
 	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceParameter.c  -o ${OBJECTDIR}/DeviceParameter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceParameter.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/DeviceParameter.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/_ext/737697433/CAN.o: ../TestCAN.X/CAN.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/737697433" 
+	@${RM} ${OBJECTDIR}/_ext/737697433/CAN.o.d 
+	@${RM} ${OBJECTDIR}/_ext/737697433/CAN.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../TestCAN.X/CAN.c  -o ${OBJECTDIR}/_ext/737697433/CAN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/737697433/CAN.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/_ext/737697433/CAN.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/Action.o: Action.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -250,6 +257,13 @@ ${OBJECTDIR}/DeviceParameter.o: DeviceParameter.c  nbproject/Makefile-${CND_CONF
 	@${RM} ${OBJECTDIR}/DeviceParameter.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceParameter.c  -o ${OBJECTDIR}/DeviceParameter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceParameter.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/DeviceParameter.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/737697433/CAN.o: ../TestCAN.X/CAN.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/737697433" 
+	@${RM} ${OBJECTDIR}/_ext/737697433/CAN.o.d 
+	@${RM} ${OBJECTDIR}/_ext/737697433/CAN.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../TestCAN.X/CAN.c  -o ${OBJECTDIR}/_ext/737697433/CAN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/737697433/CAN.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/_ext/737697433/CAN.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

@@ -10,4 +10,5 @@ RtuFrame.h  \
 Usart.h  \
 AdcSample.h  \
 yongci.h  \
+CAN.h  \
 DeviceParameter.h 

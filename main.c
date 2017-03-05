@@ -63,7 +63,7 @@
 
 // FBORPOR
 #pragma config FPWRT = PWRT_64          // POR Timer Value (64ms)
-#pragma config BODENV = BORV20          // Brown Out Voltage (Reserved)
+#pragma config BODENV = BORV42         // Brown Out Voltage (Reserved)
 #pragma config BOREN = PBOR_ON          // PBOR Enable (Enabled)
 #pragma config LPOL = PWMxL_ACT_HI      // Low-side PWM Output Polarity (Active High)
 #pragma config HPOL = PWMxH_ACT_HI      // High-side PWM Output Polarity (Active High)
@@ -78,7 +78,25 @@
 #pragma config ICS = ICS_PGD            // Comm Channel Select (Use PGC/EMUC and PGD/EMUD)
 
 
+//---------------------------------------------------------------------
 
+// Buffer Registers for CAN data to be send out in the transmit mode.
+
+unsigned int OutData0[4] = {0x5251, 0x5453, 0x5655, 0x5857};            
+unsigned int OutData1[2] = {0x5A59, 0x5C5B};
+unsigned int OutData2[4] = {0x6261, 0x6463, 0x6665, 0x6867};            
+unsigned int OutData3[2] = {0x6A69, 0x6C6B};
+
+// Intilializing the receive registers to be 0
+
+unsigned int InData0[4] = {0, 0, 0, 0};
+unsigned int InData1[2] = {0, 0};
+unsigned int InData2[4] = {0, 0, 0, 0};
+unsigned int InData3[2] = {0, 0};
+
+//---------------------------------------------------------------------
+uint16 initFlag = 0;
+uint16 sendFlag = 0;
 
 frameRtu sendFrame, recvFrame;
 uint16 data = 0;
@@ -89,7 +107,7 @@ int main()
    
     
     InitDeviceIO(); //IO初始化 首先禁止中断
-     AdcInit(); //ADC采样初始化
+    AdcInit(); //ADC采样初始化
  
 
     ClrWdt(); 
@@ -125,18 +143,37 @@ int main()
     //PMD2 = 0xFFFF;
     cn = 0;
     //延时3s判断启动
-    while(cn++ <3000)
-    {
-        __delay_ms(1);
-        ClrWdt();
-    }
+//    while(cn++ <3000)
+//    {
+//        __delay_ms(1);
+//        ClrWdt();
+//    }
     
 
+    EIDBits mask;
+    EIDBits zh;
+    mask.doubleWord = 0xffffffff; //比较所有的位
+    zh.idBits.pri = 0b0001;
+    zh.idBits.detAddr = 0b1011100;
+    zh.idBits.sourceAddr = 0b1011101;
+    zh.idBits.frameType = 0b10101;
+    zh.idBits.arttriType = 0b110011;
+    
+    CANFrame frame;
+    frame.frameDataWord[0] = 0x5251;
+    frame.frameDataWord[1] = 0x5453;
+    frame.frameDataWord[2] = 0x5655;
+    frame.frameDataWord[3] = 0x5857;
+       
+    initFlag = InitCANOne(&mask, &zh);
+    sendFlag = CANOneSendByTX0(&zh, 6, &frame);
+    while(1);
   
-    while(0xFFFF)
-    {
-        YongciMainTask();
-    }
+    //先注释，调试CAN驱动
+//    while(0xFFFF)
+//    {
+//        YongciMainTask();
+//    }
        
    
 

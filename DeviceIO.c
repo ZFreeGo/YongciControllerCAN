@@ -19,10 +19,9 @@ void InitDeviceIO(void)
     IP595_DS_DIR = 0;
     IP595_SHCP_DIR = 0;
     IP595_STCP_DIR = 0;
-
-    OutState = 0x00;
+   
+    UpdateIndicateState(ON_RUN_LED, TURN_ON);
     
-//    IP595_Out(0xAA);
 //    OutState = 0x01;
 //    while(i++<30)
 //    {
@@ -171,14 +170,14 @@ void IP595_Out(uint8 state)
 }
 
 /**************************************************
- *函数名： UpdateLedState()
- *功能：  更新LED状态
- *形参：uint8 port --从LED宏定义中选择，  uint8 state--开启/关闭 TURN_ON/TURN_OFF
+ *函数名： UpdateIndicateState()
+ *功能：  更新LED状态,更新继电器状态
+ *形参：uint8 port --从LED,Relay宏定义中选择，  uint8 state--开启/关闭 TURN_ON/TURN_OFF
  *TURN_ON 与ON组合为，ON之间可以用位或连接
  *TURN_OFF 与OFF组合为，OFF之间可以位与连接
  *返回值：void
 ****************************************************/
-void UpdateLedState(uint8 port, uint8 state)
+void UpdateIndicateState(uint8 port, uint8 state)
 {
     //开启状态
     if (state == TURN_ON)

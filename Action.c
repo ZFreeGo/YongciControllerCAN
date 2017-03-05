@@ -77,8 +77,7 @@ void ExecuteFunctioncode(frameRtu* pRtu)
             }
             case LED1_TOGLE:
             {
-               // LEDA ^= 1;
-               
+                        
                 break;
             }
             case LED2_TOGLE:
@@ -98,45 +97,44 @@ void ExecuteFunctioncode(frameRtu* pRtu)
             }
             case LED1_ON:
             {
-                //LEDE = ON_LED;
+                UpdateIndicateState(LED1_ON, TURN_ON);      
                 break;
             }
             case LED2_ON:
             {
-               // LEDB= ON_LED;
+                UpdateIndicateState(LED2_ON, TURN_ON);      
                 break;
             }
             case LED3_ON:
             {
-                //LEDC = ON_LED;
+                 UpdateIndicateState(LED3_ON, TURN_ON);
                 break;
             }
             case LED4_ON:
             {
-                //LEDD = ON_LED;
+                  UpdateIndicateState(LED4_ON, TURN_ON);
                 break;
             }
             case LED1_OFF:
             {
-                //LEDA = OFF_LED;
+                UpdateIndicateState(LED1_OFF, TURN_OFF);
                 break;
             }
             case LED2_OFF:
             {
-                //LEDB = OFF_LED;
+                UpdateIndicateState(LED2_OFF, TURN_OFF);
                 break;
             }
             case LED3_OFF:
             {
-                //LEDC = OFF_LED;
+                UpdateIndicateState(LED3_OFF, TURN_OFF);
                 break;
             }
             case LED4_OFF:
             {
-                //LEDD= OFF_LED;
+                UpdateIndicateState(LED4_OFF, TURN_OFF);
                 break;
-            }
-  
+            }  
             case TURN_ON_INT0:
             {
                 TurnOnInt0();

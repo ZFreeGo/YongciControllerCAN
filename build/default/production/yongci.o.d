@@ -9,4 +9,5 @@ RtuFrame.h  \
 DevicdIO.h  \
 Usart.h  \
 AdcSample.h  \
- SwtichCondition.h 
+ SwtichCondition.h  \
+CAN.h 

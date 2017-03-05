@@ -78,17 +78,34 @@ inline uint16 GetRunStateFlagA(void)
     ClrWdt();
     return RunStateFlagA;
 }
-
+/**************************************************
+ *函数名： HeOnLock()
+ *功能:设置合闸锁--允许合闸指令
+ *形参：  void
+ *返回值：void
+****************************************************/
 inline void HeOnLock(void)
 {
     HeActionLock =  ON_HE_LOCK;
     FenActionLock =  ON_FEN_LOCK;
 }
+/**************************************************
+ *函数名： FenOnLock()
+ *功能:设置分闸锁--允许分闸指令
+ *形参：  void
+ *返回值：void
+****************************************************/
 inline void FenOnLock(void)
 {
     FenActionLock =  ON_FEN_LOCK;
     FenActionLock =  ON_FEN_LOCK;
 }
+/**************************************************
+ *函数名： OffLockk()
+ *功能:关锁指令，不允许分闸和合闸命令执行
+ *形参：  void
+ *返回值：void
+****************************************************/
 inline void OffLock(void)
 {
     HeActionLock =  OFF_LOCK;
@@ -333,8 +350,13 @@ inline  void FenZhaActionA(void)
     StartTimer1();
 }
 
-
-inline void UpdateCount( uint16 state)
+/**************************************************
+ *函数名： UpdateCount()
+ *功能: 根据合闸与分闸更新EEPROM存在的计数
+ *形参：  uint16 state--合闸或分闸命令
+ *返回值：void
+****************************************************/
+void UpdateCount( uint16 state)
 {
    //应禁止中断
     _prog_addressT addr; 
