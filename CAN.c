@@ -345,30 +345,7 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
      }
      return len;
  }
-  /***********************************************************
-*函数名：CheckCANReciveFrame(()
-*形参：uint8 len --数据长度, CANFrame* pframe --待检测帧数据
-*返回值：uint8 —— 若为0代表失败， 大于3 代表成功，其值为数据长度
-*功能： 对接收帧数据进行CRC校验
-**************************************************************/
- uint8 CheckCANReciveFrame(uint8 len, CANFrame* pframe)
- {
-     if (len >= 3)
-     {
-          uint16 crcNew =  CRC16(pframe->framDataByte, len - 2);
-          uint16 crcOld = ((uint16)pframe->framDataByte[len-1] << 8) |  (pframe->framDataByte[len - 2]);
-          if (crcNew == crcOld)
-          {
-              return len;
-          }
-          else
-          {
-              return 0;
-          }
-         
-     }
-     return 0;
- }
+
    /***********************************************************
 *函数名：GetReciveRX0EID()
 *形参：uint8 len --数据长度, CANFrame* pframe --待检测帧数据
@@ -464,10 +441,7 @@ void __attribute__((interrupt, no_auto_psv)) _C1Interrupt(void)
         GetReciveRX0EID(&rEID);
 		C1INTFbits.RX0IF = 0; 	//If the Interrupt is due to Receive0 of CAN1 Clear the Interrupt
         rlen = ReadRx0Frame(&Rframe);
-        if (rlen >= 3)
-        {
-            rlen = CheckCANReciveFrame(rlen, &Rframe);
-        }
+      
       }
 
       else if(C1INTFbits.RX1IF)

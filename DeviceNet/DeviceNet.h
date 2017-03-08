@@ -198,6 +198,46 @@ struct DefConnectionObj
 #define IDENTIFIER_OBJ_SERIALNUM  6 //序列号
 #define IDENTIFIER_OBJ_NAME       7 //产品名称
 
+//Group1 功能码
+
+#define  GROUP1_POLL_ACK     15///从站IO轮询/状态变化/循环应答消息
+
+
+//Group2 功能码
+#define GROUP2_BIT_STROBE     0 //主站IO位选通响应消息
+#define GROUP2_POLL           1  //主站IO多点响应消息响应消息
+#define GROUP2_STATUS         2  //主站状态变换应答消息
+#define GROUP2_VISIBLE_UCN    3  //从站站显示/未连接响应消息
+
+#define GROUP2_VSILBLE        4 //主站显示请求信息
+#define GROUP2_POLL_ACK       5//主站IO轮询/状态变化/循环应答消息
+#define GROUP2_VSILBLE_ONLY2  6//仅限组2非连接显示请求信息
+#define GROUP2_REPEAT_MACID   7//重复MACID 检查消息
+
+//定义完整接收数据结构
+struct DefFrameData
+{
+      DINT ID;     //11bitID标识
+      BYTE len;    //数据长度
+      BYTE* pBuffer; //缓冲数据  
+      BYTE complteFlag; //处理完成标志 非0--未处理完成；0--处理已经完成，可以重复使用
+};
+
+#define GET_GROUP_NUM(id) ( (((id) >> 9))&0x0003)
+//获取仅组2MAC地址 id为16bit 
+#define GET_GROUP2_MAC(id)   ( (((id) >> 3))&0x003F ) 
+#define GET_GROUP2_FUNCTION(id)  ((id)&0x0003 ) 
+#define GROUP2_MSG 2 //组2报文  
+//生成GROUP1 ID
+#define MAKE_GROUP1_ID( function, mac_id) (DINT)(((function &0x1F)>>6) | (mac_id & 0x3F))
+//生成GROUP2 ID
+#define MAKE_GROUP2_ID(  function,mac_id)  (DINT)( (0x0400) | ((DINT)(mac_id &0x1F)<<3) | (function & 0x07))
+
+#define FALSE (BYTE)0;
+#define TRUE (BYTE)0xFF;
+
+
+
 //////////////供其他模块调用的函数///////////////
 extern void CANFrameFilter(BYTE * buf);
 extern unsigned char CheckMACID(void);

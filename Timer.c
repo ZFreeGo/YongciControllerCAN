@@ -84,16 +84,16 @@ inline void StopTimer2(void)
     IFS0bits.T2IF = 0;
 }
 
-/********************************************
+/*******************************************************************************
 *函数名：SetTimer3()
 *形参：uint16 ms
 *返回值：void
-*功能：TIMER3 定时器设置 —— 用于DeviceNet
-**********************************************/
+*功能：TIMER3 定时器设置，注意最大定时时间 —— 用于DeviceNet
+********************************************************************************/
  void SetTimer3(uint16 ms)
 {
       ClrWdt();
-    IPC1bits.T3IP = 1;//最高的优先级
+    IPC1bits.T3IP = 1;//优先级
     T3CONbits.TON = 0;
     T3CONbits.TCKPS = 0b11; //1:256
     T3CONbits.TCS = 0; //Fcy = Fosc/4
@@ -107,8 +107,8 @@ inline void StopTimer2(void)
     PR3 = (unsigned int)((float)FCY/1000.00/256.0*(float)ms)-1;
     TPR3Count = PR3;
     T3CONbits.TON = 0;
-
 }
+ 
 inline void StartTimer3(void)
 {
     IFS0bits.T3IF = 0;
