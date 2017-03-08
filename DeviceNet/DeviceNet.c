@@ -515,8 +515,11 @@ void CANFrameFilter(DefFrameData* pReciveFrame, DefFrameData* pSendFrame)
         switch( function)
         {
             case GROUP2_REPEAT_MACID:  //重复MAC ID检查信息
-            {            
-				ResponseMACID(pReciveFrame);                   //重复MACID检查响应函数
+            {          
+                if (mac == DeviceNetObj.MACID)
+                {
+                    ResponseMACID(pReciveFrame, 0x80);       //重复MACID检查响应函数,应答，物理端口为0
+                }
                 return; //MACID不匹配,丢弃
             }
             case GROUP2_VSILBLE_ONLY2: //1100 0000：非连接显示请求信息，预定义主从连接
@@ -543,10 +546,10 @@ void CANFrameFilter(DefFrameData* pReciveFrame, DefFrameData* pSendFrame)
 * 返回值:    	无
 * 功能描述:	检查重复MACID响应函数
 ******************************************************************************/
-void ResponseMACID(DefFrameData* pSendFrame)
+void ResponseMACID(DefFrameData* pSendFrame, BYTE config)
 {                        //重复MACID检查
     pSendFrame->ID =  MAKE_GROUP2_ID( GROUP2_REPEAT_MACID, DeviceNetObj.MACID); 
-	pSendFrame->pBuffer[0] = 0x80;	                        //请求/响应标志=1，表示响应，端口号0
+	pSendFrame->pBuffer[0] = config;	                        //请求/响应标志=1，表示响应，端口号0
 	pSendFrame->pBuffer[1]= IdentifierObj.providerID;	//制造商ID低字节
 	pSendFrame->pBuffer[2] = IdentifierObj.providerID >> 8;	//制造商ID高字节
 	pSendFrame->pBuffer[3] = IdentifierObj.serialID;	                    //序列号低字节
@@ -558,72 +561,45 @@ void ResponseMACID(DefFrameData* pSendFrame)
 }
 /*******************************************************************************
 * 函数名:	BYTE CheckMACID(void)
-* 功能描述:	主动检查重复MACID函数
+* 功能描述:	主动检查重复MACID函数。
 * 形参:	无
-* 返回值:      1    网络上有和自己重复的地址
-                0    网络上没有和自己重复的地址   	
+* 返回值:       TRUE    网络上有和自己重复的地址
+                FALSE   网络上没有和自己重复的地址   	
 *******************************************************************************/
-BYTE CheckMACID(void)
-{
-	BYTE num_retries = 2;        //检查的次数为2次
-	unsigned long t;
-
-	
-	//InterruptEnReg = 0;      //关SJA1000接收中断
-
-	
-	if(ReadData())       //SJA1000缓冲区中有信息，检查是否为重复MACID请求/响应
-	  {	
-//		if(((*(receive_buf + 1) & 0xC0) == 0x80) && ((*(receive_buf + 2) & 0xE0) == 0xE0)
-//                && ((*(receive_buf + 1) & 0x3F) == DeviceNetObj.MACID))
-//		{	             //收到重复MACID请求/响应，转到通讯故障状态。
-//			return 1;	//检查到重复MACID，返回1
-//		}
-	  }
-	while(num_retries)
-	{
-		//发送重复MACID信息,send_buf[11];
-		pSendFrame->pBuffer[0] = 0x80 | DeviceNetObj.MACID;             //=0xBF:1011  1111，报文组2，目标地址63
-		pSendFrame->pBuffer[1] = 0xE0;                             //重复 MAC ID 检查信息
-		pSendFrame->pBuffer[2] = 0x00;	                            //端口号0
-		pSendFrame->pBuffer[3]= IdentifierObj.providerID;	    //制造商ID低字节
-		pSendFrame->pBuffer[4] = IdentifierObj.providerID / 256;	//制造商ID高字节
-		t = IdentifierObj.serialID;
-		pSendFrame->pBuffer[5] = t;	  //序列号低字节
-		t >>= 8;
-		*(send_buf + 6) = t;
-		t >>= 8;
-		*(send_buf + 7) = t;
-		t >>= 8;
-		*(send_buf + 8) = t;	  //序列号高字节
-		SendData(9, send_buf);//发重复 MAC ID 检查信息
-		
-		//start_time(200);       //启动延时定时:(200)*5MS=1000ms
-        //WDR1=1;  
-        //WDR2=1; //喂狗
-		//检查重复MACID响应
-//		while(!query_time_event(3))//定时没有到的时候，重复读取接收缓冲区，检查是否为重复MACID请求/响应
-		{
-			if(ReadData())     //如果SJA1000缓冲区中有信息
-			{	
-//				if(((*(receive_buf + 1) & 0xC0) == 0x80) && ((*(receive_buf + 2) & 0xE0) == 0xE0) && ((*(receive_buf + 1) & 0x3F) == DeviceNetObj.MACID))
-//				{	//收到重复MACID请求/响应，转到通讯故障状态。
-//					return 1;	//检查到重复MACID
-//				}
-			}
-//			if(StatusReg & BS_Bit)
-//			{	//SJA1000离线
-//				return 1;	//故障
-//			}
-		}
-		num_retries--;
-//        WDR1=1;  
-//        WDR2=1; //喂狗
-	}
-	//InterruptEnReg = RIE_Bit;		//SJA1000中断使能
-	//SJA1000_CS = 1;
-
-	return 0;	//没有重复地址
+BYTE CheckMACID(DefFrameData* pReciveFrame, DefFrameData* pSendFrame)
+{	
+    int sendCount = 0;
+ 
+    do
+    {
+         pReciveFrame->complteFlag = 0;
+           //发送请求
+        ResponseMACID( pSendFrame, 0);
+        StartOverTimer();//启动超时定时器
+        while( IsOverTime())
+        {
+            if ( pReciveFrame->complteFlag)//判断是否有未发送的数据
+            {
+                BYTE mac = GET_GROUP2_MAC(pReciveFrame->ID);
+                BYTE function = GET_GROUP2_FUNCTION(pReciveFrame->ID);
+                if (function == GROUP2_REPEAT_MACID)
+                {                  
+                    if (mac == DeviceNetObj.MACID)
+                    {
+                          return TRUE; //只要有MACID一致，无论应答还是发出，均认为重复                  
+                    }
+                }                
+                else
+                {
+                    continue;
+                }
+            }
+        }
+        sendCount ++;        
+    }
+    while(++sendCount < 2);
+    
+	return FALSE;	//没有重复地址
 }
 /********************************************************************************
 ** 函数名:	void CheckAllocateCode(DefFrameData* pReciveFrame, DefFrameData* pSendFrame)
@@ -997,4 +973,24 @@ BYTE ReadData()
 {
    // ReadData();
     return 0;
+}
+/*******************************************************************************
+* 函数名:	void  StartOverTimer()
+* 功能描述: 启动超时定时器
+* 形  参:   null
+* 返回值:   null
+********************************************************************************/
+void StartOverTimer()
+{
+    
+}
+/*******************************************************************************
+* 函数名:	BOOL IsOverTime()
+* 功能描述: 启动超时定时器
+* 形  参:   null
+* 返回值:   TRUE-没有超时 FALSE-超时
+********************************************************************************/
+BOOL IsOverTime()
+{
+    return true;
 }
