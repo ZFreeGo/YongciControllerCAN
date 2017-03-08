@@ -49,7 +49,25 @@ typedef union {
         uint32 SID10_6    : 5; //SID5_0  SID10_6
     }txBits;
 }EIDBits;
-
+//11bit 扩展标识符定义
+typedef union {
+    uint16 word;
+    struct {
+        uint32 null       : 3;   //低位在前,高位在后
+        uint32 arttriType : 6;
+        uint32 frameType  : 5;
+        uint32 sourceAddr : 7; 
+       
+    }idBits;
+    struct {
+        uint32 SID10_0    : 11; //SID5_0  SID10_6
+    }regBits;
+     struct {
+        uint16 null       : 3;   //低位在前高位在后
+        uint16 SID5_0     : 6;
+        uint16 SID10_6    : 5; //SID5_0  SID10_6
+    }txBits;
+}SIDBits;
 #ifdef	__cplusplus
 extern "C" {
 #endif

@@ -3,8 +3,11 @@
 #include <xc.h>
 #include "tydef.h"
 
+//Timer2 周期计数
 uint16 TPRCount = 0;
 
+//Timer3 周期计数
+uint16 TPR3Count = 0;
 /********************************************
 *函数名：Init_Timer1()
 *形参：uint16 ms
@@ -79,4 +82,42 @@ inline void StopTimer2(void)
 {
     T2CONbits.TON = 0;
     IFS0bits.T2IF = 0;
+}
+
+/********************************************
+*函数名：SetTimer3()
+*形参：uint16 ms
+*返回值：void
+*功能：TIMER3 定时器设置 —— 用于DeviceNet
+**********************************************/
+ void SetTimer3(uint16 ms)
+{
+      ClrWdt();
+    IPC1bits.T3IP = 1;//最高的优先级
+    T3CONbits.TON = 0;
+    T3CONbits.TCKPS = 0b11; //1:256
+    T3CONbits.TCS = 0; //Fcy = Fosc/4
+    T3CONbits.TGATE = 0;
+
+    //INTCON1bits.NSTDIS = 1;// 允许嵌套
+    IFS0bits.T3IF = 0;
+    IEC0bits.T3IE = 0;
+    TMR3 = 0;
+    //PR2 = (uint16)((float)ms * MS_COUNT - 1);
+    PR3 = (unsigned int)((float)FCY/1000.00/256.0*(float)ms)-1;
+    TPR3Count = PR3;
+    T3CONbits.TON = 0;
+
+}
+inline void StartTimer3(void)
+{
+    IFS0bits.T3IF = 0;
+    TMR3 = 0;
+    PR3 =  TPR3Count;
+    T3CONbits.TON = 1;
+}
+inline void StopTimer3(void)
+{
+    T3CONbits.TON = 0;
+    IFS0bits.T3IF = 0;
 }

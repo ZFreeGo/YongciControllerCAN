@@ -22,6 +22,10 @@ void ResetTimer1(void);
 void SetTimer2(unsigned  int ms);
 void StartTimer2(void);
 void StopTimer2(void);
+
+void SetTimer3(unsigned  int ms);
+void StartTimer3(void);
+void StopTimer3(void);
 #ifdef	__cplusplus
 }
 #endif
