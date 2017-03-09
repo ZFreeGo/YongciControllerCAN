@@ -180,7 +180,7 @@ uint8 ReciveBufferDataDealing(frameRtu* pJudgeFrame, frameRtu* pReciveFrame)
                 //应加计时防止此处长时间接收不到
                 //接收缓冲数据应大于等于数据长度
                  //转存数据
-                FrameQueneOut(&FrameData[ReciveIndex++]);// ReciveIndex++; //接收数据则索引加一
+                FrameQueneOut((uint8*)&FrameData[ReciveIndex++]);// ReciveIndex++; //接收数据则索引加一
 
                   if (ReciveIndex > FRAME_DATA_LEN)
                   {
@@ -199,7 +199,7 @@ uint8 ReciveBufferDataDealing(frameRtu* pJudgeFrame, frameRtu* pReciveFrame)
                     FrameData[1] = pReciveFrame->funcode;
                     FrameData[2] = len;
                     ClrWdt(); //两个ms不知是否够运算
-                    uint16 crc =  CRC16(FrameData, len + 3);
+                    uint16 crc =  CRC16((uint8* )FrameData, len + 3);
                     ClrWdt();
                     //uint16 crc = len + 5;//用总长度代替
                     uint8  crcL = FrameData[len + 3];
@@ -208,7 +208,7 @@ uint8 ReciveBufferDataDealing(frameRtu* pJudgeFrame, frameRtu* pReciveFrame)
                     //若校验吻合,则执行下一步动作
                     if (crc == ((uint16)crcH<<8  | crcL))
                     {
-                        pReciveFrame->pData = FrameData;
+                        pReciveFrame->pData = (uint8*)FrameData;
                         pReciveFrame->completeFlag = TRUE;
 
 

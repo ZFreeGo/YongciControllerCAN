@@ -21,6 +21,12 @@
 												//CAN Bit Timing .
 #define BRP_VAL		(((float)FCY/(2*NTQ*BITRATE))-1)  //Formulae used for C1CFG1bits.BRP 
 
+void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2);
+void ConfigCANOneMaskFilterRX0(EIDBits* pRm0, EIDBits* pRf0);
+void GetReciveRX0EID(EIDBits* pEID);
+void ConfigCANOneBraud(void);
+
+
 /********************************************
 *函数名： ConfigCANOneBraud()
 *形参：void

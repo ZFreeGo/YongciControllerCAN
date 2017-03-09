@@ -22,27 +22,26 @@ void VisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* p
 void CycleInquireMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
 void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
 
-BOOL IsOverTime();    //需要根据具体平台改写
+BOOL IsTimeRemain();    //需要根据具体平台改写
 void StartOverTimer();//需要根据具体平台改写
 void SendData(struct DefFrameData* pFrame);//需要根据具体平台改写
 
 
 ////////////////////连接对象变量////////////////////////////////
-struct DefConnectionObj  CycleInquireConnedctionObj;//循环响应
+struct DefConnectionObj  CycleInquireConnedctionObj;//循环IO响应
 struct DefConnectionObj  VisibleConnectionObj;   //显示连接
 //////////////////DeviceNet对象变量////////////////////////////
-struct DefDeviceNetClass  DeviceNet_class; // = {2}
+struct DefDeviceNetClass  DeviceNet_class = {2}; //
 struct DefDeviceNetObj  DeviceNetObj;
 struct DefIdentifierObject  IdentifierObj; 
 /////////////////////////////////////////////////////////////////
-BYTE  send_buf[10];//can总线发送数组 数组第一字节为ID的高8bit，第二字节的高3bit，ID的低3bit
 
 BYTE  SendBufferData[10];//接收缓冲数据
 BYTE  ReciveBufferData[10];//接收缓冲数据
-BYTE  out_Data[8];//从站输出数组
 struct DefFrameData  DeviceNetReciveFrame; //接收帧处理
 struct DefFrameData  DeviceNetSendFrame; //接收帧处理
 
+BYTE  out_Data[8];//从站输出数组
 /*******************************************************************************
 * 函数名:	void InitDeviceNet()
 * 形参  :	null
@@ -50,8 +49,7 @@ struct DefFrameData  DeviceNetSendFrame; //接收帧处理
 * 功能描述:	初始化DeviceNet所涉及的基本数据
 *******************************************************************************/
 void InitDeviceNet()
-{
-    
+{    
     DeviceNetReciveFrame.complteFlag = 0xff;
     DeviceNetReciveFrame.pBuffer = ReciveBufferData;
     DeviceNetSendFrame.complteFlag = 0xff;
@@ -63,8 +61,8 @@ void InitDeviceNet()
 * 函数名:	void DeviceNetClassService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 * 形参  :	struct DefFrameData * pFrame，接收报文数组 
 * 返回值:    	无
-* 功能描述:	DeviceNet分类服务函数
-            DeviceNet分类只有1个属性，可选执行Get_Attribute_Single服务，响应其版本信息
+* 功能描述:	DeviceNet类服务函数
+            DeviceNet类只有1个属性，可选执行Get_Attribute_Single服务，响应其版本信息
 *******************************************************************************/
 void DeviceNetClassService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 {  
@@ -83,7 +81,7 @@ void DeviceNetClassService(struct DefFrameData* pReciveFrame, struct DefFrameDat
 		SendData(pSendFrame);                    //发送错误响应报文
 		return ;
 	}
-	if(pReciveFrame->pBuffer[3] != 1)                               //不存在的属性
+	if(pReciveFrame->pBuffer[2] != 1)                               //不存在的属性
 	{	
 	    pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID); 
 		pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
@@ -254,7 +252,7 @@ void VisibleConnectObjService(struct DefFrameData* pReciveFrame, struct DefFrame
         case SVC_SET_ATTRIBUTE_SINGLE://设置服务，#define SVC_SET_ATTRIBUTE_SINGLE	0x10
         {
             pSendFrame->pBuffer[1]= 0x80 | SVC_SET_ATTRIBUTE_SINGLE;// R/R=1表示响应，pReciveFrame->pBuffer[1]是接收报文中的服务代码
-            pSendFrame->pBuffer[2] =  pReciveFrame->pBuffer[5];
+            pSendFrame->pBuffer[2] =  pReciveFrame->pBuffer[5]; //根据需要添加长度限制
             pSendFrame->pBuffer[3] =  pReciveFrame->pBuffer[6];;
             pSendFrame->len = 4;
             break;       
@@ -262,24 +260,30 @@ void VisibleConnectObjService(struct DefFrameData* pReciveFrame, struct DefFrame
         case SVC_GET_ATTRIBUTE_SINGLE://获取服务 
         {
             pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;
-            if(pReciveFrame->pBuffer[4] == 7)                   //属性ID为7，表示通过本连接发送的最大字节数为8个
-            {	 			
-                pSendFrame->pBuffer[2] = 0x08;
-                pSendFrame->pBuffer[3] = 0;
-                pSendFrame->len = 4;
-            }
-            else if(pReciveFrame->pBuffer[4]== 8)              //属性ID为8，表示通过本连接接收的最大字节数为8个
-            { 
-                pSendFrame->pBuffer[2] = 0x08;
-                pSendFrame->pBuffer[3] = 0;
-                 pSendFrame->len = 4;
-            }
-            else
+            switch(pReciveFrame->pBuffer[4])
             {
-                pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
-                pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
-                pSendFrame->pBuffer[3] = 0x01;
-                pSendFrame->len = 4;
+                case 7:                   //属性ID为7，表示通过本连接发送的最大字节数为8个
+                {	 			
+                    pSendFrame->pBuffer[2] = 0x08;
+                    pSendFrame->pBuffer[3] = 0;
+                    pSendFrame->len = 4;
+                    break;
+                }
+                case 8:             //属性ID为8，表示通过本连接接收的最大字节数为8个
+                { 
+                    pSendFrame->pBuffer[2] = 0x08;
+                    pSendFrame->pBuffer[3] = 0;
+                    pSendFrame->len = 4;
+                    break;
+                }
+                default:
+                {
+                    pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
+                    pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
+                    pSendFrame->pBuffer[3] = 0x01;
+                    pSendFrame->len = 4;
+                    break;
+                }
             }
             break;
         }
@@ -305,36 +309,55 @@ void CycInquireConnectObjService(struct DefFrameData* pReciveFrame, struct DefFr
 {
 	pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID); 
 	pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);	
-	if(pReciveFrame->pBuffer[1] == SVC_SET_ATTRIBUTE_SINGLE)
-	{
-		pSendFrame->pBuffer[1]= 0x80 | SVC_SET_ATTRIBUTE_SINGLE;
-        pSendFrame->pBuffer[2] = pReciveFrame->pBuffer[5];
-        pSendFrame->pBuffer[3] = pReciveFrame->pBuffer[6];
-		CycleInquireConnedctionObj.state = 4;
-	}
-	else if(pReciveFrame->pBuffer[1] == SVC_GET_ATTRIBUTE_SINGLE)
-	{
-		pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;
-		if(pReciveFrame->pBuffer[4] == 7)//属性ID为7，表示通过本连接发送的最大字节数
-		{		
-			pSendFrame->pBuffer[2] = 0x08;
-			pSendFrame->pBuffer[3] = 0;
-             pSendFrame->len = 4;
-		}
-		else if(pReciveFrame->pBuffer[4] == 8)//属性ID为8，表示通过本连接接收的最大字节数
-		{
-			pSendFrame->pBuffer[2] = 0x08;
-			pSendFrame->pBuffer[3] = 0;
-             pSendFrame->len = 4;
-		}
-	}
-	else
-	{
-		pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
-		pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
-		pSendFrame->pBuffer[3] = 0x01;
-        pSendFrame->len = 4;
-	}
+    switch(pReciveFrame->pBuffer[1])
+    {
+        case  SVC_SET_ATTRIBUTE_SINGLE:
+        {
+            pSendFrame->pBuffer[1]= 0x80 | SVC_SET_ATTRIBUTE_SINGLE;
+            pSendFrame->pBuffer[2] = pReciveFrame->pBuffer[5]; //这样写，其实没有意义
+            pSendFrame->pBuffer[3] = pReciveFrame->pBuffer[6];
+            CycleInquireConnedctionObj.state = 4; //4--超时 3--已建立好 ？
+            break;
+        }
+        case SVC_GET_ATTRIBUTE_SINGLE:
+        {
+            pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;
+            switch(pReciveFrame->pBuffer[4])
+            {
+                case 7:                   //属性ID为7，表示通过本连接发送的最大字节数为8个
+                {	 			
+                    pSendFrame->pBuffer[2] = 0x08;
+                    pSendFrame->pBuffer[3] = 0;
+                    pSendFrame->len = 4;
+                    break;
+                }
+                case 8:             //属性ID为8，表示通过本连接接收的最大字节数为8个
+                { 
+                    pSendFrame->pBuffer[2] = 0x08;
+                    pSendFrame->pBuffer[3] = 0;
+                    pSendFrame->len = 4;
+                    break;
+                }
+                default:
+                {
+                    pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
+                    pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
+                    pSendFrame->pBuffer[3] = 0x01;
+                    pSendFrame->len = 4;
+                    break;
+                }
+            }
+            break;
+        }
+        default:
+        {
+            pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
+            pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
+            pSendFrame->pBuffer[3] = 0x01;
+            pSendFrame->len = 4;
+            break;
+        }
+    }
 	SendData(pSendFrame);
 }
 
@@ -363,10 +386,10 @@ void IdentifierClassService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 ********************************************************************************/   
 void IdentifierObjService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 {
+    pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID); 
+    pSendFrame->pBuffer[0] = pReciveFrame->pBuffer[0] & 0x7F; 
 	if(pReciveFrame->pBuffer[1] == SVC_GET_ATTRIBUTE_SINGLE)
-	{
-		pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID); 
-		pSendFrame->pBuffer[0] = pReciveFrame->pBuffer[0] & 0x7F;  
+	{	 
 		pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;
         
         switch(pReciveFrame->pBuffer[4])
@@ -444,7 +467,14 @@ void IdentifierObjService(struct DefFrameData* pReciveFrame, struct DefFrameData
             }
         }
     }
-
+    else
+    {
+        pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
+        pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
+        pSendFrame->pBuffer[3] = ERR_NO_ADDITIONAL_DESC;
+        pSendFrame->len = 4;	
+        SendData(pSendFrame);
+    }   
 }
 /********************************************************************************
 * 函数名:	void RountineClassObjService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
@@ -536,7 +566,7 @@ void CANFrameFilter(struct DefFrameData* pReciveFrame, struct DefFrameData* pSen
 				UnconVisibleMsgService(pReciveFrame, pSendFrame);    //非连接显式信息服务 
                 return;
             }
-            case GROUP2_POLL_ACK: //主站I/O轮询命令/状态变化/循环信息
+            case  GROUP2_POLL_STATUS_CYCLE: //主站I/O轮询命令/状态变化/循环信息
             {     
                 CycleInquireMsgService(pReciveFrame, pSendFrame);     // I/O轮询信息服务
                 return ;    
@@ -546,11 +576,16 @@ void CANFrameFilter(struct DefFrameData* pReciveFrame, struct DefFrameData* pSen
 				VisibleMsgService(pReciveFrame, pSendFrame);        //显式信息服务
                 break;
             }
+            default:
+            {
+                
+                break;
+            }
         }
 	}
 }
 /******************************************************************************
-* 函数名:	void ResponseMACID(void)
+* 函数名:	void ResponseMACID(struct DefFrameData* pSendFrame, BYTE config)
 * 形参:	无
 * 返回值:    	无
 * 功能描述:	检查重复MACID响应函数
@@ -569,23 +604,22 @@ void ResponseMACID(struct DefFrameData* pSendFrame, BYTE config)
 	SendData(pSendFrame);                      //发送报文
 }
 /*******************************************************************************
-* 函数名:	BYTE CheckMACID(void)
+* 函数名:	BOOL CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 * 功能描述:	主动检查重复MACID函数。
 * 形参:	无
 * 返回值:       TRUE    网络上有和自己重复的地址
                 FALSE   网络上没有和自己重复的地址   	
 *******************************************************************************/
-BYTE CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
+BOOL CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 {	
-    int sendCount = 0;
- 
+    int sendCount = 0; 
     do
     {
-         pReciveFrame->complteFlag = 0;
+        pReciveFrame->complteFlag = 0;
            //发送请求
         ResponseMACID( pSendFrame, 0);
         StartOverTimer();//启动超时定时器
-        while( IsOverTime())
+        while( IsTimeRemain())
         {
             if ( pReciveFrame->complteFlag)//判断是否有未发送的数据
             {
@@ -616,57 +650,45 @@ BYTE CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFra
 ** 返回值:      BYTE 0-溢出 非零为检测通过 	
 ** 功能描述:j检测非连接显式信息服务设置连接代码
 ********************************************************************************/
-BYTE CheckAllocateCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
+BOOL CheckAllocateCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 {  
+    BYTE error = 0; //错误
+    BYTE errorAdd = 0; //附加错误描述
+    
     //如果已分配主站,则检查是否来自同一主站
     if((IdentifierObj.device_state & 0x01) && (pReciveFrame->pBuffer[5] != DeviceNetObj.assign_info.master_MACID))	//验证主站
     {	//不是来自当前主站，错误响应
+        error =  ERR_OBJECT_STATE_INFLICT;
+        errorAdd = 0x01;     
+    }
+    //仅限组2无连接信息，这个报文指向DeviceNet对象，其类ID为3。在每个DeviceNet的物理连接中只有一个DeviceNet类的实例，因此实例ID为1
+    else if(pReciveFrame->pBuffer[2] != 3 || pReciveFrame->pBuffer[3] != 1)	//验证类ID和实例ID
+    {   //验证类ID和实例ID错误，错误响应
+        error =   ERR_PROPERTY_VALUE_INAVAIL;
+        errorAdd = ERR_NO_ADDITIONAL_DESC;         
+    }
+    else if(pReciveFrame->pBuffer[4] == 0)	//验证分配选择字节
+    {//配置字节为零，主站没有配置从站，错误响应
+        error =  ERR_PROPERTY_VALUE_INAVAIL; //(0x80 | ERR_PROPERTY_VALUE_INAVAIL)?
+        errorAdd = 0x02;    
+    }
+    else if(pReciveFrame->pBuffer[4] & ~(CYC_INQUIRE | VISIBLE_MSG | 0x04))  
+    {//如果不是轮询配置、显示连接、位选通，错误响应
+        error =  ERR_RES_INAVAIL;
+        errorAdd = 0x02;        
+    }
+    if (error != 0)
+    {
         pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);
         pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
         pSendFrame->pBuffer[1]= (0x80 | SVC_ERROR_RESPONSE);
-        pSendFrame->pBuffer[2] = ERR_OBJECT_STATE_INFLICT;
-        pSendFrame->pBuffer[3] = 0x01;
+        pSendFrame->pBuffer[2] = error;
+        pSendFrame->pBuffer[3] = errorAdd;
         pSendFrame->len = 4;
         SendData(pSendFrame);  //发送报文
-        return 0;	
+        return FALSE;
     }
-    //仅限组2无连接信息，这个报文指向DeviceNet对象，其类ID为3。在每个DeviceNet的物理连接中只有一个DeviceNet类的实例，因此实例ID为1
-    if(pReciveFrame->pBuffer[2] != 3 || pReciveFrame->pBuffer[3] != 1)	//验证类ID和实例ID
-    {   //验证类ID和实例ID错误，错误响应
-        pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);       
-        pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
-        pSendFrame->pBuffer[1]= (0x80 | SVC_ERROR_RESPONSE);//#define SVC_ERROR_RESPONSE		0x14
-        pSendFrame->pBuffer[2] = ERR_PROPERTY_VALUE_INAVAIL;
-        pSendFrame->pBuffer[3] = ERR_NO_ADDITIONAL_DESC;
-        pSendFrame->len = 4;
-        SendData(pSendFrame);//发送报文
-        return 0;	
-    }
-    if(pReciveFrame->pBuffer[4] == 0)	//验证分配选择字节
-    {//配置字节为零，主站没有配置从站，错误响应
-        pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);     
-        pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
-        pSendFrame->pBuffer[1]= (0x80 | SVC_ERROR_RESPONSE);
-        pSendFrame->pBuffer[2] = (0x80 | ERR_PROPERTY_VALUE_INAVAIL);
-        pSendFrame->pBuffer[3] = 0x02;
-        pSendFrame->len = 4;
-        SendData(pSendFrame);//发送报文
-        return 0;
-    }
-    if(pReciveFrame->pBuffer[4] & ~(CYC_INQUIRE | VISIBLE_MSG | 0x04))  
-    {//如果不是轮询配置、显示连接、位选通，错误响应
-        pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);     
-        pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
-        pSendFrame->pBuffer[1]= (0x80 | SVC_ERROR_RESPONSE);
-        pSendFrame->pBuffer[2] = (0x80 | ERR_RES_INAVAIL);
-        pSendFrame->pBuffer[3] = 0x02;
-         pSendFrame->len = 4;
-        //发送
-        SendData(pSendFrame);
-        return 0;
-    }
-    
-    return 0xff;
+    return TRUE;
 }
     
 /********************************************************************************
@@ -675,8 +697,11 @@ BYTE CheckAllocateCode(struct DefFrameData* pReciveFrame, struct DefFrameData* p
 ** 返回值:      BYTE 0-溢出 非零为检测通过 	
 ** 功能描述:检测非连接显式信息服务释放连接代码
 ********************************************************************************/
-BYTE CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
+BOOL CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 {  
+    BYTE error = 0; //错误
+    BYTE errorAdd = 0; //附加错误描述
+    
     if((pReciveFrame->pBuffer[4] == 0) || ((pReciveFrame->pBuffer[4] & 0x3F) != 0))   //如果配置字节为0
     {	
         pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);      
@@ -687,28 +712,27 @@ BYTE CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pS
         return 0;
     }
     if(pReciveFrame->pBuffer[4] & ~(CYC_INQUIRE | VISIBLE_MSG | 0x04))//不支持的连接，错误响应
-    {	
-        pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);   
+    {
+        error = ERR_RES_INAVAIL;
+        errorAdd = 0x02;
+    }
+    else if(pReciveFrame->pBuffer[4] & DeviceNetObj.assign_info.select)//连接不存在，错误响应
+    {       
+        error = ERR_EXISTED_MODE;
+        errorAdd = 0x02;       
+    }
+     if (error != 0)
+    {
+        pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);
         pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
         pSendFrame->pBuffer[1]= (0x80 | SVC_ERROR_RESPONSE);
-        pSendFrame->pBuffer[2] = ERR_RES_INAVAIL;
-        pSendFrame->pBuffer[3] = 0x02;
+        pSendFrame->pBuffer[2] = error;
+        pSendFrame->pBuffer[3] = errorAdd;
         pSendFrame->len = 4;
-        SendData(pSendFrame);
-        return 0;
+        SendData(pSendFrame);  //发送报文
+        return FALSE;
     }
-    if(pReciveFrame->pBuffer[4] & DeviceNetObj.assign_info.select)//连接不存在，错误响应
-    {	
-        pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);   
-        pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
-        pSendFrame->pBuffer[1]= (0x80 | SVC_ERROR_RESPONSE);
-        pSendFrame->pBuffer[2] = ERR_EXISTED_MODE;
-        pSendFrame->pBuffer[3] = 0x02;
-        pSendFrame->len = 4;
-        SendData(pSendFrame);
-        return 0;
-    }
-    return 0xff;
+    return TRUE;
 }
 
 
@@ -719,11 +743,8 @@ BYTE CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pS
 ** 功能描述:	非连接显式信息服务函数，主站用该报文命令从站配置连接
 ********************************************************************************/
 void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
-{
-
-    if(pReciveFrame->pBuffer[1] == SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET)//pReciveFrame->pBuffer[1]是收到的服务代码
-	                                                          //如果是建立连接服务代码 
-                                                              
+{ 
+    if(pReciveFrame->pBuffer[1] == SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET)//pReciveFrame->pBuffer[1]是收到的服务代码                                                                                                                      
 	{
         if (!CheckAllocateCode(pReciveFrame, pSendFrame))
         {          
@@ -738,8 +759,8 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 		if(pReciveFrame->pBuffer[4] & CYC_INQUIRE)                          //分配I/O轮询连接
 		{	
 			InitCycleInquireConnectionObj();                       //I/O轮询连接配置函数
-			CycleInquireConnedctionObj.produced_connection_id = 0x7800 | (DeviceNetObj.MACID << 5);//	produced_connection_id
-			CycleInquireConnedctionObj.consumed_connection_id = 0x80A0 | (DeviceNetObj.MACID << 8);// consumed_connection_id
+			CycleInquireConnedctionObj.produced_connection_id = MAKE_GROUP1_ID(GROUP1_POLL_STATUS_CYCLER_ACK , DeviceNetObj.MACID) ;//	produced_connection_id ?
+			CycleInquireConnedctionObj.consumed_connection_id = MAKE_GROUP2_ID(GROUP2_POLL_STATUS_CYCLE, DeviceNetObj.MACID) ;// consumed_connection_id
  	        //成功执行响应
 			pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);   
 			pSendFrame->pBuffer[0] = pReciveFrame->pBuffer[0] & 0x7F;   // 目的MAC ID(主站ID) 
@@ -752,8 +773,8 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 		if(pReciveFrame->pBuffer[4] & VISIBLE_MSG)
 		{	
 			InitVisibleConnectionObj();//分配显式信息连接  
-			VisibleConnectionObj.produced_connection_id = 0x7800 | (DeviceNetObj.MACID << 5);
-			VisibleConnectionObj.consumed_connection_id = 0x8080 | (DeviceNetObj.MACID << 8);
+			VisibleConnectionObj.produced_connection_id =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);
+			VisibleConnectionObj.consumed_connection_id =  MAKE_GROUP2_ID(GROUP2_VSILBLE, DeviceNetObj.MACID);
 			//成功执行响应
 			pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);   
 			pSendFrame->pBuffer[0] = pReciveFrame->pBuffer[0] & 0x7F;
@@ -766,12 +787,12 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 		if(pReciveFrame->pBuffer[4] & 0x04) //分配位选通连接
 		{	
 		
-			pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);   
-			pSendFrame->pBuffer[0] = pReciveFrame->pBuffer[0] & 0x7F;
-			pSendFrame->pBuffer[1]= (0x80 | SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET);
-			pSendFrame->pBuffer[2] = 0;	//信息体格式0,8/8
-            pSendFrame->len = 3;
-			SendData(pSendFrame);
+//			pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);   
+//			pSendFrame->pBuffer[0] = pReciveFrame->pBuffer[0] & 0x7F;
+//			pSendFrame->pBuffer[1]= (0x80 | SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET);
+//			pSendFrame->pBuffer[2] = 0;	//信息体格式0,8/8
+//            pSendFrame->len = 3;
+//			SendData(pSendFrame);
 			return ;
 		}
 		IdentifierObj.device_state |= 0x01;	//设备已和主站连接
@@ -892,12 +913,12 @@ void  CycleInquireMsgService(struct DefFrameData* pReciveFrame, struct DefFrameD
      out_Data[2] = pReciveFrame->pBuffer[2];
      out_Data[3] = pReciveFrame->pBuffer[3];          //保存主站设置的数据
 
-    if(CycleInquireConnedctionObj.state != 4)	//轮询I/O连接没建立
+    if(CycleInquireConnedctionObj.state != 4)	//轮询I/O连接没建立 
 		return ;
 
 	//pSendFrame->pBuffer[0] = 0x78 | DeviceNetObj.MACID >> 3;
 	//pSendFrame->pBuffer[1] = DeviceNetObj.MACID << 5;  //发送数组的帧ID
-    pSendFrame->ID =  MAKE_GROUP1_ID(GROUP1_POLL_ACK, DeviceNetObj.MACID);   
+    pSendFrame->ID =  MAKE_GROUP1_ID(GROUP1_POLL_STATUS_CYCLER_ACK, DeviceNetObj.MACID);   
     pSendFrame->pBuffer[0] = 0x1A;
     pSendFrame->pBuffer[1] = 0x2A;
     pSendFrame->pBuffer[2] = 0x3A;
@@ -992,12 +1013,12 @@ void StartOverTimer()
     StartTimer3();
 }
 /*******************************************************************************
-* 函数名:	BOOL IsOverTime()----根据具体平台需要重新
+* 函数名:	BOOL IsTimeRemain()----根据具体平台需要重新
 * 功能描述: 启动超时定时器
 * 形  参:   null
 * 返回值:   TRUE-没有超时 FALSE-超时
 ********************************************************************************/
-BOOL IsOverTime()
+BOOL IsTimeRemain()
 {
     if ( IFS0bits.T3IF )
     {

@@ -19,6 +19,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 
+#define BIT_STROKE  0x04    //位选通
 #define CYC_INQUIRE	0x02    //定义CYC_INQUIRE，IO轮询
 #define VISIBLE_MSG	0x01    //显式信息连接
 
@@ -171,18 +172,19 @@ struct DefConnectionObj
 #define IDENTIFIER_OBJ_NAME       7 //产品名称
 
 //Group1 功能码
-
-#define  GROUP1_POLL_ACK     15///从站IO轮询/状态变化/循环应答消息
+#define  GROUP1_STATUS_CYCLE_ACK           13///从站IO状态改变或循环报文
+#define  GROUP1_BIT_STROKE                 14///从站IO位选通应答报文
+#define  GROUP1_POLL_STATUS_CYCLER_ACK     15///从站IO轮询或状态变化/循环应答消息
 
 
 //Group2 功能码
 #define GROUP2_BIT_STROBE     0 //主站IO位选通响应消息
 #define GROUP2_POLL           1  //主站IO多点响应消息响应消息
-#define GROUP2_STATUS         2  //主站状态变换应答消息
-#define GROUP2_VISIBLE_UCN    3  //从站站显示/未连接响应消息
+#define GROUP2_STATUS_POLL        2  //主站状态变换或循环应答报文应答消息
+#define GROUP2_VISIBLE_UCN    3  //从站站显示响应消息
 
 #define GROUP2_VSILBLE        4 //主站显示请求信息
-#define GROUP2_POLL_ACK       5//主站IO轮询/状态变化/循环应答消息
+#define GROUP2_POLL_STATUS_CYCLE         5//主站IO轮询/状态变化/循环报文
 #define GROUP2_VSILBLE_ONLY2  6//仅限组2非连接显示请求信息
 #define GROUP2_REPEAT_MACID   7//重复MACID 检查消息
 

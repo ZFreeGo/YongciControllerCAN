@@ -174,11 +174,11 @@ void YongciMainTask(void)
             {
                 if (ACTIVE_STATE == YUAN_BEN_INPUT)//远控
                 {
-                   result =  ContinuousCheckYuan( &LastOrderState );
+                   result =  ContinuousCheckYuan( (uint16*)&LastOrderState );
                 }
                 else
                 {
-                    result =  ContinuousCheck( &LastOrderState );
+                    result =  ContinuousCheck((uint16*) &LastOrderState );
                 }
                 ClrWdt();
                if (CHECK_FEN_ORDER  ==  result)

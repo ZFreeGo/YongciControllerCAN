@@ -16,6 +16,8 @@
 #include "Action.h"
 #include "Header.h"
 
+void SendAckMesssage(uint8 fun);
+
 
 extern volatile uint16 HezhaTimeA;
 extern volatile uint16 FenzhaTimeA;
@@ -45,9 +47,9 @@ inline void SendAckMesssage(uint8 fun)
 {
     uint16 len = 0;
     ClrWdt();
-    GenRTUFrame(LOCAL_ADDRESS, ACK, &fun, 1, SendFrameData, &len);
+    GenRTUFrame(LOCAL_ADDRESS, ACK, &fun, 1, (uint8*)SendFrameData, (uint8 *)&len);
     ClrWdt();
-    SendFrame(SendFrameData, len);
+    SendFrame((uint8*)SendFrameData, len);
     ClrWdt();
 }
 /**************************************************

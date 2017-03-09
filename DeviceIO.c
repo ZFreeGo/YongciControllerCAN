@@ -13,7 +13,7 @@ uint8 OutState = 0;
 **********************************************/
 void InitDeviceIO(void)
 {
-    uint8 i = 0;
+//    uint8 i = 0;
     ADPCFG = 0xFFFF; //模拟端口全部作为数字端口
     ClrWdt();
     IP595_DS_DIR = 0;
