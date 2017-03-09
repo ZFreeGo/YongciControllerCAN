@@ -9,6 +9,14 @@ typedef signed long int     int32;
 typedef signed int          int16;
 typedef signed char         int8;
 
+#ifndef TRUE
 #define TRUE   0xff
+
+#endif
+
+#ifndef FALSE
 #define FALSE  0
+
+#endif
+
 #endif

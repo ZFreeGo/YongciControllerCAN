@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>YongciContronerVer3</name>
+            <name>YongciContronerCAN</name>
             <creation-uuid>de05a30a-5ee9-46f0-8ce2-15d44aae8d78</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>

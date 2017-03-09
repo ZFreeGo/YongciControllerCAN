@@ -143,29 +143,6 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
      
      C1TX0DLCbits.EID5_0 =  pEID->txBits.EID5_0;
  }
-  /********************************************
-*函数名：ConfigDataAddCRC()
-*形参：uint8 len 待处理数据长度 ，uint8* pData 数据指针
-*返回值：uint8 ——处理后数据长度 0 错误
-*功能： 待发数据加CRC16校验码
-**********************************************/
- inline uint8 ConfigDataAddCRC(uint8 len, uint8* pData)
- {
-     //数据最少1个，做多6个，留出两个作为CRC16 校验码
-     uint8 datalen = 0;
-     if (1 <= len && len <= 6)
-     {
-          uint16 crc =  CRC16(pData, len);
-          pData[len] = (uint8)(crc & 0xFF); //浣��
-          pData[len+1] = (uint8)((crc & 0xFF00) >> 8);//楂
-          datalen = len + 2;
-     }
-     else
-     {
-         datalen = 0;
-     }
-     return datalen;
- }
  /********************************************
 *函数名：ConfigDataTXB0()
 *形参：uint8 len 待处理数据长度 ，CANFrame* pframe 帧数据
@@ -288,27 +265,94 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
      }
      return len;
  }
+
 /********************************************
 *函数名：CANOneSendByTX0()
-*形参：EIDBits* pEID --EID标识, uint8 len 原始数据长度, CANFrame* pframe--带发送帧
+*形参：: uint16* pID  11bitID标识, uint8 * pbuff 缓冲数据, uint8 len 数据长度
 *返回值：uint8 —— 发送数据总长度 0--数据出错
 *功能： 通过TX0发送带有CRC16的帧数据
 **********************************************/
- uint8 CANOneSendByTX0(EIDBits* pEID, uint8 len, CANFrame* pframe)
- {
-     ConfigEIDTX0(pEID);
-     len = ConfigDataAddCRC(len, pframe->framDataByte);
-     if (len > 2 && len <= 8) //正常添加CRC16的长度必然大于2
-     {
-         len =  ConfigDataTXB0(len, pframe);
-          C1TX0CONbits.TXREQ = 1;         //请求发送
-     }
-     else
-     {
-         len  = 0;
-     }
-     return len;
+ uint8 CANSendData(uint16 id, uint8 * pbuff, uint8 len)
+ {  
+    if ((len <= 8) && (len > 0))
+    {
+        C1TX0SIDbits.TXIDE = 0;//标准帧
+        C1TX0SIDbits.SRR = 1;
+        C1TX0SIDbits.SID10_6 = GET_SID10_6(id);
+        C1TX0SIDbits.SID5_0  =  GET_SID5_0(id);    
+        
+         C1TX0DLCbits.DLC = len;
+         C1TX0DLCbits.TXRTR = 0;//正常报文       
+         C1TX0CONbits.TXPRI = 3;
+         
+         //可考虑使用地址，简化操作
+         switch(len) 
+         {
+             case 1:
+             {
+                 C1TX0B1 =   pbuff[0];                 
+                 break;
+             }
+             case 2:
+             {
+                 C1TX0B1 =   (((uint16)pbuff[1]) << 8)  | pbuff[0];                 
+                 break;
+             }
+             case 3:
+             {
+                 C1TX0B1 =   (((uint16)pbuff[1]) << 8)  | pbuff[0];       
+                 C1TX0B2 =   pbuff[0];                 
+                 break;
+             }
+             case 4:
+             {
+                 C1TX0B1 =   (((uint16)pbuff[1]) << 8)  | pbuff[0];   
+                 C1TX0B2 =   (((uint16)pbuff[3]) << 8)  | pbuff[2];
+                 break;
+             } 
+             case 5:
+             {
+                  C1TX0B1 =   (((uint16)pbuff[1]) << 8)  | pbuff[0];   
+                  C1TX0B2 =   (((uint16)pbuff[3]) << 8)  | pbuff[2];
+                  C1TX0B3 =   pbuff[4]; 
+                 break;
+             }
+             case 6:
+             {
+                 C1TX0B1 =   (((uint16)pbuff[1]) << 8)  | pbuff[0];   
+                 C1TX0B2 =   (((uint16)pbuff[3]) << 8)  | pbuff[2];
+                 C1TX0B3 =   (((uint16)pbuff[5]) << 8)  | pbuff[4];
+                 break;
+             } 
+             case 7:
+             {
+                 C1TX0B1 =   (((uint16)pbuff[1]) << 8)  | pbuff[0];   
+                 C1TX0B2 =   (((uint16)pbuff[3]) << 8)  | pbuff[2];
+                 C1TX0B3 =   (((uint16)pbuff[5]) << 8)  | pbuff[4];
+                 C1TX0B4 =   pbuff[6]; 
+                 break;
+             }
+             case 8:
+             {
+                 C1TX0B1 =   (((uint16)pbuff[1]) << 8)  | pbuff[0];   
+                 C1TX0B2 =   (((uint16)pbuff[3]) << 8)  | pbuff[2];
+                 C1TX0B3 =   (((uint16)pbuff[5]) << 8)  | pbuff[4];
+                 C1TX0B4 =   (((uint16)pbuff[7]) << 8)  | pbuff[6];
+                 break;
+             }    
+         }
+              
+          
+         
+        
+        
+        
+        
+        C1TX0CONbits.TXREQ = 1;         //请求发送
+    }
+    return 0;
  }
+ 
  /***********************************************************
 *函数名：ReadRx0Frame()
 *形参：CANFrame* pframe--保存帧地址

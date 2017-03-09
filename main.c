@@ -150,24 +150,24 @@ int main()
 //    }
     
 
-    EIDBits mask;
-    EIDBits zh;
-    mask.doubleWord = 0xffffffff; //比较所有的位
-    zh.idBits.pri = 0b0001;
-    zh.idBits.detAddr = 0b1011100;
-    zh.idBits.sourceAddr = 0b1011101;
-    zh.idBits.frameType = 0b10101;
-    zh.idBits.arttriType = 0b110011;
-    
-    CANFrame frame;
-    frame.frameDataWord[0] = 0x5251;
-    frame.frameDataWord[1] = 0x5453;
-    frame.frameDataWord[2] = 0x5655;
-    frame.frameDataWord[3] = 0x5857;
-       
-    initFlag = InitCANOne(&mask, &zh);
-    sendFlag = CANOneSendByTX0(&zh, 6, &frame);
-    while(1);
+//    EIDBits mask;
+//    EIDBits zh;
+//    mask.doubleWord = 0xffffffff; //比较所有的位
+//    zh.idBits.pri = 0b0001;
+//    zh.idBits.detAddr = 0b1011100;
+//    zh.idBits.sourceAddr = 0b1011101;
+//    zh.idBits.frameType = 0b10101;
+//    zh.idBits.arttriType = 0b110011;
+//    
+//    CANFrame frame;
+//    frame.frameDataWord[0] = 0x5251;
+//    frame.frameDataWord[1] = 0x5453;
+//    frame.frameDataWord[2] = 0x5655;
+//    frame.frameDataWord[3] = 0x5857;
+//       
+//    initFlag = InitCANOne(&mask, &zh);
+//    sendFlag = CANOneSendByTX0(&zh, 6, &frame);
+//    while(1);
   
     //先注释，调试CAN驱动
 //    while(0xFFFF)

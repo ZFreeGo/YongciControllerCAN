@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/YongciContronerVer3.production.elf">
+  <executable name="dist/default/production/YongciContronerCAN.production.elf">
     <memory name="data">
       <units>bytes</units>
       <length>2048</length>
-      <used>458</used>
-      <free>1590</free>
+      <used>500</used>
+      <free>1548</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>48768</length>
-      <used>16416</used>
-      <free>32352</free>
+      <used>20247</used>
+      <free>28521</free>
     </memory>
   </executable>
 </project>

@@ -13,35 +13,6 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-// TODO Insert appropriate #include <>
-
-// TODO Insert C++ class definitions if appropriate
-
-// TODO Insert declarations
-
-// Comment a function and leverage automatic documentation with slash star star
-/**
-    <p><b>Function prototype:</b></p>
-  
-    <p><b>Summary:</b></p>
-
-    <p><b>Description:</b></p>
-
-    <p><b>Precondition:</b></p>
-
-    <p><b>Parameters:</b></p>
-
-    <p><b>Returns:</b></p>
-
-    <p><b>Example:</b></p>
-    <code>
- 
-    </code>
-
-    <p><b>Remarks:</b></p>
- */
-// TODO Insert declarations or function prototypes (right here) to leverage 
-// live documentation
 
 #ifdef	__cplusplus
 extern "C" {
@@ -138,6 +109,7 @@ typedef UINT ENGUNITS;
 #define ERR_GROUP2_ERR 				0x2A	//仅由组2服务器报告，且仅在服务不支持，属性不支持，或属性不可设置时
 
 #define ERR_NO_ADDITIONAL_DESC		0xFF	//无附加描述
+
 /////////标示符结构体/////////////////////////////////////
 struct DefIdentifierObject
 {
@@ -223,7 +195,7 @@ struct DefFrameData
       volatile BYTE complteFlag; //处理完成标志 非0--未处理完成；0--处理已经完成，可以重复使用
 };
 
-#define GET_GROUP_NUM(id) ( (((id) >> 9))&0x0003)
+#define GET_GROUP_NUM(id)  ((((id) >> 9))&0x0003)
 //获取仅组2MAC地址 id为16bit 
 #define GET_GROUP2_MAC(id)   ( (((id) >> 3))&0x003F ) 
 #define GET_GROUP2_FUNCTION(id)  ((id)&0x0003 ) 
@@ -233,14 +205,14 @@ struct DefFrameData
 //生成GROUP2 ID
 #define MAKE_GROUP2_ID(  function,mac_id)  (DINT)( (0x0400) | ((DINT)(mac_id &0x1F)<<3) | (function & 0x07))
 
-#define FALSE (BYTE)0;
-#define TRUE (BYTE)0xFF;
+#define FALSE (BYTE)0
+#define TRUE (BYTE)0xFF
 
 
 
 //////////////供其他模块调用的函数///////////////
-extern void CANFrameFilter(BYTE * buf);
-extern unsigned char CheckMACID(void);
+extern void CANFrameFilter(struct DefFrameData * pReciveBuf, struct DefFrameData * pSendBuf);
+extern unsigned char CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
 extern void DeviceMonitorPluse(void);
 //////////////供其他模块调用的变量/////////////////
 extern struct DefDeviceNetObj  DeviceNetObj;
@@ -250,10 +222,6 @@ extern struct DefConnectionObj CycleInquireConnedctionObj;
 extern BYTE  send_buf[10];
 extern BYTE  ADC_Data[8];
 
-    
-
-
-    
 
 #ifdef	__cplusplus
 }
