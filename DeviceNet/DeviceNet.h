@@ -207,8 +207,8 @@ struct DefFrameData
 //生成GROUP2 ID
 #define MAKE_GROUP2_ID(  function,mac_id)  (DINT)( (0x0400) | ((DINT)(mac_id &0x1F)<<3) | (function & 0x07))
 
-#define FALSE (BYTE)0
-#define TRUE (BYTE)0xFF
+//#define FALSE (BYTE)0
+//#define TRUE (BYTE)0xFF
 
 
 
@@ -216,6 +216,8 @@ struct DefFrameData
 extern void CANFrameFilter(struct DefFrameData * pReciveBuf, struct DefFrameData * pSendBuf);
 extern unsigned char CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
 extern void DeviceMonitorPluse(void);
+extern BOOL DeviceNetReciveCenter(WORD* pID, BYTE * pbuff, BYTE len);
+extern void InitDeviceNet();
 //////////////供其他模块调用的变量/////////////////
 extern struct DefDeviceNetObj  DeviceNetObj;
 extern struct DefIdentifierObject   IdentifierObj;

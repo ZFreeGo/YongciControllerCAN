@@ -44,7 +44,7 @@
 *完成时间:
 ************************************************************/
 #include "Header.h"
-
+#include "DeviceNet/DeviceNet.h"
 
 // DSPIC30F4011Configuration Bit Settings
 
@@ -174,8 +174,12 @@ int main()
 //    {
 //        YongciMainTask();
 //    }
-       
-   
+   InitStandardCAN(0, 0);     
+   InitDeviceNet();
+  
+      
+              
+    while(TRUE);
 
     
 }

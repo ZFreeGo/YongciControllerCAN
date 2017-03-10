@@ -14,12 +14,12 @@
 ************************************************************/
 #include "CAN.h"
 #include "Header.h"
-
+#include "DeviceNet/DeviceNet.h"
 //#define FCY 		30000000             		// 30 MHz
-#define BITRATE 	500000			 			// 1Mbps
-#define NTQ 		15							// Number of Tq cycles which will make the 
+#define BITRATE 	500000			 			// 500K
+#define NTQ 		8							// Number of Tq cycles which will make the 
 												//CAN Bit Timing .
-#define BRP_VAL		(((float)FCY/(2*NTQ*BITRATE))-1)  //Formulae used for C1CFG1bits.BRP 
+#define BRP_VAL		(((float)FCY * 4/(2*NTQ*BITRATE))-1)  //Formulae used for C1CFG1bits.BRP 
 
 void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2);
 void ConfigCANOneMaskFilterRX0(EIDBits* pRm0, EIDBits* pRf0);
@@ -37,12 +37,18 @@ inline void ConfigCANOneBraud(void)
 {
     C1CTRLbits.CANCKS = 1;			// Select the CAN Master Clock . It is equal to Fcy here. 
                                     // equal to Fcy.(Fcy=30Mhz)
-    C1CFG1bits.SJW=00;				//同步跳转宽度时间 Synchronized jump width time is 1 x TQ when SJW is equal to 00
+    C1CFG1bits.SJW=00;				//1TQ 同步跳转宽度时间 Synchronized jump width time is 1 x TQ when SJW is equal to 00
     C1CFG1bits.BRP = BRP_VAL;		//波特率预分频比位 ((FCY/(2*NTQ*BITRATE))-1) 	
 
-    C1CFG2 = 0x03F5;               // SEG1PH=6Tq, SEG2PH=3Tq, PRSEG=5Tq 
+    //C1CFG2 = 0x03F5;               // SEG1PH=6Tq, SEG2PH=3Tq, PRSEG=5Tq    
                                     // Sample 3 times
                                     // Each bit time is 15Tq    
+   
+    C1CFG2bits.SEG1PH = 1; //相位缓冲段 （n+1） TQ  
+    C1CFG2bits.SEG2PHTS = 1; //相位段 2 时间选择位 1-可自由编程， 0-SEG1PH 与信息处理时间 （ 3 TQ）中的较大值
+    C1CFG2bits.SAM = 0;    //采样次数 1-采样1次， 0-采样3次    
+    C1CFG2bits.PRSEG = 1; //广播时间端bit
+    C1CFG2bits.SEG2PH = 2; //相位缓冲段 2 位 
 }
 
 /********************************************
@@ -119,6 +125,57 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
     i = 0;
     state = 0xAA;
     while(C1CTRLbits.OPMODE != REQOP_LOOPBACK)//Wait for CAN1 mode change from Configuration Mode to Loopback mode 
+    {
+        __delay_us(10);
+        ClrWdt();
+        if (i++ > 1000)
+        {
+            state = 0;
+            break;//超时错误
+        }
+    }
+    return state;
+     
+ }
+  uint16 InitStandardCAN(uint16 id, uint16 mask)
+ {
+     uint16 i = 0, state = 0;
+    
+    ///Interrupt Section of CAN Peripheral 中断配置
+     C1INTF = 0;					//Reset all The CAN Interrupts 
+     IFS1bits.C1IF = 0;  			//Reset the Interrupt Flag status register
+     C1INTE = 0x00FF;               //Enable all CAN interrupt sources
+     IEC1bits.C1IE = 1;				//Enable the CAN1 Interrupt 
+      
+    C1CTRLbits.REQOP = REQOP_CONFIG;//设置为配置模式 
+    
+    //配置CAN比特率
+    C1CTRLbits.CANCKS = 0;			// 0-4Fcy 1-Fcy  Select the CAN Master Clock . It is equal to Fcy here. 
+                                    // equal to Fcy.(Fcy=30Mhz)
+    C1CFG1bits.SJW=00;				//同步跳转宽度时间 Synchronized jump width time is 1 x TQ when SJW is equal to 00
+    C1CFG1bits.BRP = BRP_VAL;		//波特率预分频比位 ((FCY/(2*NTQ*BITRATE))-1) 	
+
+    C1CFG2 = 0x03F5;               // SEG1PH=6Tq, SEG2PH=3Tq, PRSEG=5Tq 
+                                    // Sample 3 times
+                                    // Each bit time is 15Tq    
+     // Configure Receive registers, Filters and Masks配置接收滤波器与屏蔽滤波器
+     //清空接收滤波器
+     // 接收缓冲区 0 状态和控制寄存器  RM0-RF0,RF1
+      C1RX0CON = 0x0000;
+      C1RX0CONbits.FILHIT0 = 0; //选择接收滤波器RF0
+       //RM0 屏蔽器配置 标准与扩展
+      C1RXM0SIDbits.MIDE = 0; //过滤类型 扩展帧; //EXIDE = 1 其它29bit全为1， 0-标准帧
+      C1RXM0SIDbits.SID     =  0;   //全部接收
+      //接收滤波器 RF0 (RF1)
+      C1RXF0SIDbits.EXIDE = 0;//1-使能扩展帧 0-标准帧
+      C1RXF0SIDbits.SID     = 0;	//CAN1 Receive Acceptance Filter2 SID 	 bit 12-2 SID<10:0>： 标准标识符屏蔽位
+     
+    
+    C1CTRLbits.REQOP =  REQOP_WORK ; //正常工作模式
+    //2ms 看门狗等待
+    i = 0;
+    state = 0xAA;
+    while(C1CTRLbits.OPMODE !=  REQOP_WORK )//Wait for CAN1 mode change from Configuration Mode to work mode 
     {
         __delay_us(10);
         ClrWdt();
@@ -486,11 +543,12 @@ void __attribute__((interrupt, no_auto_psv)) _C1Interrupt(void)
       }  
 
       if(C1INTFbits.RX0IF)
-      {      
-        
-        GetReciveRX0EID(&rEID);
+      {   
 		C1INTFbits.RX0IF = 0; 	//If the Interrupt is due to Receive0 of CAN1 Clear the Interrupt
-        rlen = ReadRx0Frame(&Rframe);
+        uint16 id = C1RX0SIDbits.SID;
+        uint8 len = C1RX0DLCbits.DLC;
+         ReadRx0Frame(&Rframe);
+        DeviceNetReciveCenter(&id,Rframe.framDataByte, len);
       
       }
 

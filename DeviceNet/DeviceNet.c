@@ -16,6 +16,18 @@
 
 #include "..\CAN.h"
 #include "..\Timer.h"
+
+////////////////////////////////////////////////////////////可考虑存入EEPROM
+UINT  providerID = 0X1234;               // 供应商ID 
+UINT  device_type = 0;                   // 通用设备
+UINT  product_code = 0X00d2;             // 产品代码
+USINT  major_ver = 0X01;
+USINT  minor_ver = 0X01;                 // 版本
+UDINT  serialID = 0x001169BC;            // 序列号
+SHORT_STRING  product_name = {8, (unsigned char *)"YongCi"};// 产品名称
+//////////////////////////////////////////////////////
+
+
 //////////////////////函数申明/////////////////////////////////
 void ResponseMACID(struct DefFrameData* pSendFrame, BYTE config);
 void VisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
@@ -55,6 +67,22 @@ void InitDeviceNet()
     DeviceNetSendFrame.complteFlag = 0xff;
     DeviceNetSendFrame.pBuffer = SendBufferData;
   
+    //////////初始化DeviceNetObj对象////////////////////////////////
+	DeviceNetObj.MACID =0x02 ;                   //如果跳键没有设置从站地址，默认从站地址0x02            
+	DeviceNetObj.baudrate = 2;                   //500Kbit/s
+	DeviceNetObj.assign_info.select = 0;         //初始的配置选择字节清零
+	DeviceNetObj.assign_info.master_MACID =0x0A; //默认主站地址，在预定义主从连接建立过程中，主站还会告诉从站：主站的地址
+//////////////连接对象为不存在状态//////////////////////////
+	VisibleConnectionObj.state = 0;
+	CycleInquireConnedctionObj.state = 0;//状态：没和主站连接，主站还没有配置从站
+///////////////初始化标识符对象///////////////
+	IdentifierObj.providerID = providerID;        //providerID = 0X2620; 供应商ID 
+	IdentifierObj.device_type = device_type;      //device_type = 0;通用设备
+	IdentifierObj.product_code = product_code;    //product_code =0X00d2;产品代码
+	IdentifierObj.version.major_ver = major_ver;  //major_ver = 1;
+	IdentifierObj.version.minor_ver = minor_ver;  //minor_ver = 1;版本
+	IdentifierObj.serialID = serialID;            //serialID = 0x001169BC;;序列号
+	IdentifierObj.product_name = product_name;    //product_name = {8, "ADC4"};产品名称
 }
 
 /*******************************************************************************
