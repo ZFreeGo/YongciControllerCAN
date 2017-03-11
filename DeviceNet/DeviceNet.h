@@ -76,8 +76,7 @@ typedef UINT ENGUNITS;
 #define SVC_MONITOR_PLUSE		0x4D
 #define SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET	0x4B
 #define SVC_RELEASE_GROUP2_IDENTIFIER_SET			0x4C
-#define SVC_Create_Visible_Connectin_Set			0x4B
-#define SVC_Releas_Connection_Set					0x4C
+
 ////////////////////错误描述///////////////////////////////////////
 #define ERR_SUCCESS 				0x00	//成功执行了服务
 #define ERR_RES_INAVAIL 			0x02	//对象执行服务的资源不可用
@@ -205,7 +204,7 @@ struct DefFrameData
 //生成GROUP1 ID
 #define MAKE_GROUP1_ID( function, mac_id) (DINT)(((function &0x1F)>>6) | (mac_id & 0x3F))
 //生成GROUP2 ID
-#define MAKE_GROUP2_ID(  function,mac_id)  (DINT)( (0x0400) | ((DINT)(mac_id &0x1F)<<3) | (function & 0x07))
+#define MAKE_GROUP2_ID(  function,mac_id)  (DINT)( (0x0400) | ((DINT)(mac_id &0x3F)<<3) | (function & 0x07))
 
 //#define FALSE (BYTE)0
 //#define TRUE (BYTE)0xFF

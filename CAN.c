@@ -16,7 +16,7 @@
 #include "Header.h"
 #include "DeviceNet/DeviceNet.h"
 //#define FCY 		30000000             		// 30 MHz
-#define BITRATE 	500000			 			// 500K
+#define BITRATE 	100000			 			// 500K
 #define NTQ 		8							// Number of Tq cycles which will make the 
 												//CAN Bit Timing .
 #define BRP_VAL		(((float)FCY * 4/(2*NTQ*BITRATE))-1)  //Formulae used for C1CFG1bits.BRP 

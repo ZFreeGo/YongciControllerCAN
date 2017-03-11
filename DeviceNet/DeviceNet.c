@@ -25,7 +25,7 @@ USINT  major_ver = 0X01;
 USINT  minor_ver = 0X01;                 // 版本
 UDINT  serialID = 0x001169BC;            // 序列号
 SHORT_STRING  product_name = {8, (unsigned char *)"YongCi"};// 产品名称
-//////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 
 //////////////////////函数申明/////////////////////////////////
@@ -43,7 +43,7 @@ void SendData(struct DefFrameData* pFrame);//需要根据具体平台改写
 struct DefConnectionObj  CycleInquireConnedctionObj;//循环IO响应
 struct DefConnectionObj  VisibleConnectionObj;   //显示连接
 //////////////////DeviceNet对象变量////////////////////////////
-struct DefDeviceNetClass  DeviceNet_class = {2}; //
+struct DefDeviceNetClass  DeviceNetClass = {2}; //
 struct DefDeviceNetObj  DeviceNetObj;
 struct DefIdentifierObject  IdentifierObj; 
 /////////////////////////////////////////////////////////////////
@@ -125,8 +125,8 @@ void DeviceNetClassService(struct DefFrameData* pReciveFrame, struct DefFrameDat
 	pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID); 
 	pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);            //目的MAC ID(主站ID) 
 	pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;//R/R=1表示响应，VC_Get_Attribute_Single服务代码
-	pSendFrame->pBuffer[2] = DeviceNet_class.version;
-	pSendFrame->pBuffer[3] = DeviceNet_class.version >> 8;   //类的版本信息
+	pSendFrame->pBuffer[2] = DeviceNetClass.version;
+	pSendFrame->pBuffer[3] = DeviceNetClass.version >> 8;   //类的版本信息
     pSendFrame->len = 4;
 	//发送
 	SendData(pSendFrame);                        //发送显示信息的响应报文
