@@ -16,8 +16,8 @@
 #include "Header.h"
 #include "DeviceNet/DeviceNet.h"
 //#define FCY 		30000000             		// 30 MHz
-#define BITRATE 	100000			 			// 500K
-#define NTQ 		8							// Number of Tq cycles which will make the 
+#define BITRATE 	100000			 			// 100K
+#define NTQ 		16							// Number of Tq cycles which will make the 
 												//CAN Bit Timing .
 #define BRP_VAL		(((float)FCY * 4/(2*NTQ*BITRATE))-1)  //Formulae used for C1CFG1bits.BRP 
 
@@ -155,9 +155,17 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
     C1CFG1bits.SJW=00;				//同步跳转宽度时间 Synchronized jump width time is 1 x TQ when SJW is equal to 00
     C1CFG1bits.BRP = BRP_VAL;		//波特率预分频比位 ((FCY/(2*NTQ*BITRATE))-1) 	
 
-    C1CFG2 = 0x03F5;               // SEG1PH=6Tq, SEG2PH=3Tq, PRSEG=5Tq 
+   // C1CFG2 = 0x03F5;               // SEG1PH=6Tq, SEG2PH=3Tq, PRSEG=5Tq 
                                     // Sample 3 times
-                                    // Each bit time is 15Tq    
+                                    // Each bit time is 15Tq   
+    C1CFG2bits.SEG1PH = 6; //相位缓冲段 （n+1） TQ  
+    C1CFG2bits.SEG2PHTS = 1; //相位段 2 时间选择位 1-可自由编程， 0-SEG1PH 与信息处理时间 （ 3 TQ）中的较大值
+    C1CFG2bits.SAM = 0;    //采样次数 1-采样1次， 0-采样3次    
+    C1CFG2bits.PRSEG = 1; //广播时间端bit
+    C1CFG2bits.SEG2PH = 5; //相位缓冲段 2 位 
+    
+    
+    
      // Configure Receive registers, Filters and Masks配置接收滤波器与屏蔽滤波器
      //清空接收滤波器
      // 接收缓冲区 0 状态和控制寄存器  RM0-RF0,RF1
@@ -171,11 +179,11 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
       C1RXF0SIDbits.SID     = 0;	//CAN1 Receive Acceptance Filter2 SID 	 bit 12-2 SID<10:0>： 标准标识符屏蔽位
      
     
-    C1CTRLbits.REQOP =  REQOP_WORK ; //正常工作模式
+    C1CTRLbits.REQOP = REQOP_WORK   ; //正常工作模式REQOP_WORK
     //2ms 看门狗等待
     i = 0;
     state = 0xAA;
-    while(C1CTRLbits.OPMODE !=  REQOP_WORK )//Wait for CAN1 mode change from Configuration Mode to work mode 
+    while(C1CTRLbits.OPMODE !=  REQOP_WORK  )//Wait for CAN1 mode change from Configuration Mode to work mode 
     {
         __delay_us(10);
         ClrWdt();
@@ -340,7 +348,7 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
     if ((len <= 8) && (len > 0))
     {
         C1TX0SIDbits.TXIDE = 0;//标准帧
-        C1TX0SIDbits.SRR = 1;
+        C1TX0SIDbits.SRR = 0; //0-正常报文 1-报文将请求远程发送
         C1TX0SIDbits.SID10_6 = GET_SID10_6(id);
         C1TX0SIDbits.SID5_0  =  GET_SID5_0(id);    
         

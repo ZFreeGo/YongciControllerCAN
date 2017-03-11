@@ -174,12 +174,16 @@ int main()
 //    {
 //        YongciMainTask();
 //    }
+    uint8 data[] = {0x11, 0x22, 0x33,0x44};
    InitStandardCAN(0, 0);     
    InitDeviceNet();
-  
-      
+   // CANSendData(0x31, data, 2);   
               
-    while(TRUE);
+    while(TRUE)
+    {
+        __delay_ms(500);
+          CANSendData(0x3A, data, 3);   
+    }
 
     
 }
