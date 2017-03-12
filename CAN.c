@@ -178,7 +178,11 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
       C1RXF0SIDbits.EXIDE = 0;//1-使能扩展帧 0-标准帧
       C1RXF0SIDbits.SID     = 0;	//CAN1 Receive Acceptance Filter2 SID 	 bit 12-2 SID<10:0>： 标准标识符屏蔽位
      
-    
+    //错误中断允许位
+      C1INTEbits.ERRIE = 1;//错误中断允许位
+      C1INTFbits.ERRIF = 0;
+      
+      
     C1CTRLbits.REQOP = REQOP_WORK   ; //正常工作模式REQOP_WORK
     //2ms 看门狗等待
     i = 0;
@@ -372,7 +376,7 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
              case 3:
              {
                  C1TX0B1 =   (((uint16)pbuff[1]) << 8)  | pbuff[0];       
-                 C1TX0B2 =   pbuff[0];                 
+                 C1TX0B2 =   pbuff[2];                 
                  break;
              }
              case 4:
@@ -457,7 +461,9 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
                      return 0;//错误跳出
              }
          }
+        
      }
+      C1RX0CONbits.RXFUL = 0; 
      return len;
  }
 
@@ -475,6 +481,7 @@ inline void ConfigCANOneMaskFilterRX1(EIDBits* pRm1, EIDBits* pRf2)
      
      
  }
+
  //--------------------------------------------------------------------------------------------------------------------------
 											//Interrupt Section for CAN1
 //--------------------------------------------------------------------------------------------------------------------------
@@ -487,55 +494,6 @@ void __attribute__((interrupt, no_auto_psv)) _C1Interrupt(void)
     
     IFS1bits.C1IF = 0;         //Clear interrupt flag
     
-//    switch (C1CTRLbits.ICODE)//
-//    {
-//        case WakeInt:
-//        {
-//            C1INTFbits.WAKIF = 0;
-//            break;
-//        }
-//        case TXB0Int:
-//        {
-//            C1INTFbits.TX0IF = 0;
-//            break;
-//        }
-//        case TXB1Int:
-//        {
-//            C1INTFbits.TX1IF = 0;
-//            
-//            break;
-//        }
-//        case TXB2Int:
-//        {
-//            C1INTFbits.TX2IF = 0;
-//            break;
-//        }
-//        case RXB0Int:
-//        {
-//            C1INTFbits.RX0IF = 0;
-//            rlen = ReadRx0Frame(&Rframe);
-//            if (rlen >= 3)
-//            {
-//                rlen = CheckCANReciveFrame(rlen, &Rframe);
-//            }
-//            
-//            break;
-//        }
-//        case RXB1Int:
-//        {
-//            C1INTFbits.RX1IF = 0;
-//            break;
-//        }
-//        case ErrorInt:
-//        {
-//            
-//            break;
-//        }
-//        default:
-//        {
-//            break;
-//        }
-//    }
         
       if(C1INTFbits.TX0IF)
       {
@@ -555,7 +513,7 @@ void __attribute__((interrupt, no_auto_psv)) _C1Interrupt(void)
 		C1INTFbits.RX0IF = 0; 	//If the Interrupt is due to Receive0 of CAN1 Clear the Interrupt
         uint16 id = C1RX0SIDbits.SID;
         uint8 len = C1RX0DLCbits.DLC;
-         ReadRx0Frame(&Rframe);
+        ReadRx0Frame(&Rframe);
         DeviceNetReciveCenter(&id,Rframe.framDataByte, len);
       
       }
@@ -566,5 +524,11 @@ void __attribute__((interrupt, no_auto_psv)) _C1Interrupt(void)
 		C1INTFbits.RX1IF = 0;  	//If the Interrupt is due to Receive1 of CAN1 Clear the Interrupt
    
       }
+    
+    if(C1INTFbits.ERRIF)
+    {
+        C1INTFbits.ERRIF = 0;
+        while(1);
+    }
 }
 

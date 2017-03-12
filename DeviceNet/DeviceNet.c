@@ -17,6 +17,12 @@
 #include "..\CAN.h"
 #include "..\Timer.h"
 
+//DeviceNet 工作模式
+#define  MODE_REPEAT_MAC  0xA1  //重复MAC检测
+#define  MODE_NORMAL      0xA2  //正常工作模式
+#define  MODE_FAULT       0xA4  //故障模式
+#define  MODE_STOP        0xA8  //停止模式
+
 ////////////////////////////////////////////////////////////可考虑存入EEPROM
 UINT  providerID = 0X1234;               // 供应商ID 
 UINT  device_type = 0;                   // 通用设备
@@ -54,6 +60,9 @@ struct DefFrameData  DeviceNetReciveFrame; //接收帧处理
 struct DefFrameData  DeviceNetSendFrame; //接收帧处理
 
 BYTE  out_Data[8];//从站输出数组
+
+static volatile USINT WorkMode = 0; //
+
 /*******************************************************************************
 * 函数名:	void InitDeviceNet()
 * 形参  :	null
@@ -83,10 +92,15 @@ void InitDeviceNet()
 	IdentifierObj.version.minor_ver = minor_ver;  //minor_ver = 1;版本
 	IdentifierObj.serialID = serialID;            //serialID = 0x001169BC;;序列号
 	IdentifierObj.product_name = product_name;    //product_name = {8, "ADC4"};产品名称
-    
+    WorkMode = MODE_REPEAT_MAC;
     BOOL result = CheckMACID( &DeviceNetReciveFrame, &DeviceNetSendFrame);
     
-    while(result);
+    while(result)
+    {
+        WorkMode = MODE_FAULT;
+    }
+    
+    WorkMode = MODE_NORMAL;
 }
 
 /*******************************************************************************
@@ -109,6 +123,7 @@ void DeviceNetClassService(struct DefFrameData* pReciveFrame, struct DefFrameDat
 		pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;    //ERR_SERVICE_NOT_SUPPORT ,不支持的服务
 		pSendFrame->pBuffer[3] = ERR_RES_INAVAIL;            //ERR_RES_INAVAIL ,对象执行服务的资源不可用(附加错误代码)
 		pSendFrame->len = 4;
+        pReciveFrame->complteFlag = 0;
         //发送
 		SendData(pSendFrame);                    //发送错误响应报文
 		return ;
@@ -121,6 +136,7 @@ void DeviceNetClassService(struct DefFrameData* pReciveFrame, struct DefFrameDat
 		pSendFrame->pBuffer[2] = ERR_ID_INAVAIL;             //ERR_ID_INAVAIL ,不存在指定的类/实例/属性ID(附加错误代码)
 		pSendFrame->pBuffer[3] = ERR_NO_ADDITIONAL_DESC;     //ERR_NO_ADDITIONAL_DESC ,无附加描述代码
         pSendFrame->len = 4;
+         pReciveFrame->complteFlag = 0;
 		//发送
 		SendData(pSendFrame);                    //发送错误响应报文
 		return ;
@@ -132,6 +148,7 @@ void DeviceNetClassService(struct DefFrameData* pReciveFrame, struct DefFrameDat
 	pSendFrame->pBuffer[2] = DeviceNetClass.version;
 	pSendFrame->pBuffer[3] = DeviceNetClass.version >> 8;   //类的版本信息
     pSendFrame->len = 4;
+     pReciveFrame->complteFlag = 0;
 	//发送
 	SendData(pSendFrame);                        //发送显示信息的响应报文
 }
@@ -148,7 +165,7 @@ void DeviceNetObjService(struct DefFrameData* pReciveFrame, struct DefFrameData*
     {
     case (SVC_GET_ATTRIBUTE_SINGLE):         //获取单个属性服务
 	{        
-        switch(pReciveFrame->pBuffer[3]) //实例ID
+        switch(pReciveFrame->pBuffer[4]) //属性ID
         {
             case DEVICENET_OBJ_MACID:
             {
@@ -157,6 +174,7 @@ void DeviceNetObjService(struct DefFrameData* pReciveFrame, struct DefFrameData*
                 pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;//R/R=1表示响应，SVC_GET_ATTRIBUTE_SINGLE服务代码
                 pSendFrame->pBuffer[2] = DeviceNetObj.MACID;    //源MAC ID(从站ID) 
                 pSendFrame->len = 3;
+                pReciveFrame->complteFlag = 0;
                 //发送
                 SendData(pSendFrame);                //发送显示信息的响应报文
                 return ;             
@@ -168,6 +186,7 @@ void DeviceNetObjService(struct DefFrameData* pReciveFrame, struct DefFrameData*
                 pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;
                 pSendFrame->pBuffer[2] = DeviceNetObj.baudrate;//从站波特率
                 pSendFrame->len = 3;
+                pReciveFrame->complteFlag = 0;
                 //发送
                 SendData(pSendFrame);
                 return;
@@ -180,6 +199,7 @@ void DeviceNetObjService(struct DefFrameData* pReciveFrame, struct DefFrameData*
                 pSendFrame->pBuffer[2] = DeviceNetObj.assign_info.select;       //分配选择
                 pSendFrame->pBuffer[3] = DeviceNetObj.assign_info.master_MACID; //主站MAC ID 
                 pSendFrame->len = 4;
+                pReciveFrame->complteFlag = 0;
                 //发送
                 SendData(pSendFrame);
                 return ;
@@ -192,6 +212,7 @@ void DeviceNetObjService(struct DefFrameData* pReciveFrame, struct DefFrameData*
                 pSendFrame->pBuffer[2] = ERR_ID_INAVAIL;            //ERR_ID_INAVAIL ,不存在指定的类/实例/属性ID(附加错误代码)
                 pSendFrame->pBuffer[3] = ERR_NO_ADDITIONAL_DESC;    //ERR_NO_ADDITIONAL_DESC ,无附加描述代码
                 pSendFrame->len = 4;
+                pReciveFrame->complteFlag = 0;
                 //发送
                 SendData(pSendFrame);                   //发送错误响应报文
                 return ;
@@ -213,6 +234,7 @@ void DeviceNetObjService(struct DefFrameData* pReciveFrame, struct DefFrameData*
                 pSendFrame->pBuffer[2] = ERR_PROPERTY_NOT_SET;
                 pSendFrame->pBuffer[3] = ERR_NO_ADDITIONAL_DESC;
                 pSendFrame->len = 4;
+                pReciveFrame->complteFlag = 0;
                 //发送
                 SendData(pSendFrame);
                 return ;              
@@ -225,6 +247,8 @@ void DeviceNetObjService(struct DefFrameData* pReciveFrame, struct DefFrameData*
                 pSendFrame->pBuffer[2] = ERR_ID_INAVAIL;
                 pSendFrame->pBuffer[3] = ERR_NO_ADDITIONAL_DESC;
                 pSendFrame->len = 4;
+                
+                pReciveFrame->complteFlag = 0;
                 //发送
                 SendData(pSendFrame);
                 return ;			           
@@ -245,6 +269,7 @@ void DeviceNetObjService(struct DefFrameData* pReciveFrame, struct DefFrameData*
 		pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
 		pSendFrame->pBuffer[3] = ERR_NO_ADDITIONAL_DESC;
         pSendFrame->len = 4;
+        pReciveFrame->complteFlag = 0;
 		//发送
 		SendData(pSendFrame);
 		return ;
@@ -265,6 +290,8 @@ void ConnectionClassService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 	pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;           //ERR_SERVICE_NOT_SUPPORT ,不支持的服务
 	pSendFrame->pBuffer[3] = 0x01;                              //附加错误代码
     pSendFrame->len = 4;
+    
+    pReciveFrame->complteFlag = 0;
 	SendData(pSendFrame);//发送
 	return ;
 }
@@ -329,6 +356,7 @@ void VisibleConnectObjService(struct DefFrameData* pReciveFrame, struct DefFrame
         }            
     }  	
 	//发送
+    pReciveFrame->complteFlag = 0;
 	SendData(pSendFrame);
 }
 /********************************************************************************
@@ -345,10 +373,40 @@ void CycInquireConnectObjService(struct DefFrameData* pReciveFrame, struct DefFr
     {
         case  SVC_SET_ATTRIBUTE_SINGLE:
         {
-            pSendFrame->pBuffer[1]= 0x80 | SVC_SET_ATTRIBUTE_SINGLE;
-            pSendFrame->pBuffer[2] = pReciveFrame->pBuffer[5]; //这样写，其实没有意义
-            pSendFrame->pBuffer[3] = pReciveFrame->pBuffer[6];
-            CycleInquireConnedctionObj.state = 4; //4--超时 3--已建立好 ？
+            pSendFrame->pBuffer[1]= 0x80 | SVC_SET_ATTRIBUTE_SINGLE;     
+            switch (pReciveFrame->pBuffer[4]) //检查属性
+            {
+                case 1: //state 4-超时 3-已建立好连接 1-配置状态
+                {
+                    if (CycleInquireConnedctionObj.state == 1)//是否为配置状态
+                    {
+                        if (pReciveFrame->pBuffer[5] <= 4) //检查是否为有效状态
+                        {
+                              CycleInquireConnedctionObj.state = pReciveFrame->pBuffer[5]; 
+                              pSendFrame->pBuffer[2] = CycleInquireConnedctionObj.state;
+                               pSendFrame->len = 3;
+                        }
+                        else
+                        {
+                            pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
+                            pSendFrame->pBuffer[2] =  ERR_PROPERTY_VALUE_INAVAIL;
+                            pSendFrame->pBuffer[3] = 0xFF;
+                            pSendFrame->len = 4;
+                        }
+                        break;
+                        
+                    }
+                    else
+                    {
+                        pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
+                        pSendFrame->pBuffer[2] =  ERR_PROPERTY_LIST_ERR;
+                        pSendFrame->pBuffer[3] = 0xFF;
+                        pSendFrame->len = 4; 
+                    }
+                    break;
+                    
+                }
+            }
             break;
         }
         case SVC_GET_ATTRIBUTE_SINGLE:
@@ -390,6 +448,7 @@ void CycInquireConnectObjService(struct DefFrameData* pReciveFrame, struct DefFr
             break;
         }
     }
+    pReciveFrame->complteFlag = 0;
 	SendData(pSendFrame);
 }
 
@@ -406,7 +465,8 @@ void IdentifierClassService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 	pSendFrame->pBuffer[1]= 0x80 | SVC_ERROR_RESPONSE;
 	pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
 	pSendFrame->pBuffer[3] = 0x01;
-     pSendFrame->len = 4;
+    pSendFrame->len = 4;
+    pReciveFrame->complteFlag = 0;
 	SendData(pSendFrame);
 	return ;
 }
@@ -420,11 +480,14 @@ void IdentifierObjService(struct DefFrameData* pReciveFrame, struct DefFrameData
 {
     pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID); 
     pSendFrame->pBuffer[0] = pReciveFrame->pBuffer[0] & 0x7F; 
+   
 	if(pReciveFrame->pBuffer[1] == SVC_GET_ATTRIBUTE_SINGLE)
 	{	 
-		pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;
+		pSendFrame->pBuffer[1]= 0x80 | SVC_GET_ATTRIBUTE_SINGLE;        
+        USINT attribute = pReciveFrame->pBuffer[4];
+        pReciveFrame->complteFlag = 0;
         
-        switch(pReciveFrame->pBuffer[4])
+        switch(attribute)
         {
             case IDENTIFIER_OBJ_SUPPLIERID:  //属性ID1，表示用数字标识各供应商
             {
@@ -484,7 +547,7 @@ void IdentifierObjService(struct DefFrameData* pReciveFrame, struct DefFrameData
                 pSendFrame->pBuffer[5]= IdentifierObj.product_name.ucdata[2];
                 pSendFrame->pBuffer[6] = IdentifierObj.product_name.ucdata[3];
                 pSendFrame->pBuffer[7] = IdentifierObj.product_name.ucdata[4];
-                 pSendFrame->len = 8;
+                pSendFrame->len = 8;
                 SendData(pSendFrame);
                 break;
             }
@@ -522,6 +585,7 @@ void RountineClassObjService(struct DefFrameData* pReciveFrame, struct DefFrameD
 	pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
 	pSendFrame->pBuffer[3] = 0x01;
     pSendFrame->len = 4;
+    pReciveFrame->complteFlag = 0;
 	SendData(pSendFrame);
 	return ;	
 }
@@ -661,6 +725,7 @@ BOOL CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFra
                 {                  
                     if (mac == DeviceNetObj.MACID)
                     {
+                         pReciveFrame->complteFlag = 0;
                           return TRUE; //只要有MACID一致，无论应答还是发出，均认为重复                  
                     }
                 }                
@@ -673,7 +738,7 @@ BOOL CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFra
       
     }
     while(++sendCount < 2);
-    
+    pReciveFrame->complteFlag = 0;
 	return FALSE;	//没有重复地址
 }
 /********************************************************************************
@@ -717,6 +782,7 @@ BOOL CheckAllocateCode(struct DefFrameData* pReciveFrame, struct DefFrameData* p
         pSendFrame->pBuffer[2] = error;
         pSendFrame->pBuffer[3] = errorAdd;
         pSendFrame->len = 4;
+        pReciveFrame->complteFlag = 0;
         SendData(pSendFrame);  //发送报文
         return FALSE;
     }
@@ -740,6 +806,7 @@ BOOL CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pS
         pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
         pSendFrame->pBuffer[1]= (0x80 | SVC_RELEASE_GROUP2_IDENTIFIER_SET);
         pSendFrame->len = 2;
+        pReciveFrame->complteFlag = 0;
         SendData(pSendFrame);
         return 0;
     }
@@ -761,6 +828,7 @@ BOOL CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pS
         pSendFrame->pBuffer[2] = error;
         pSendFrame->pBuffer[3] = errorAdd;
         pSendFrame->len = 4;
+        pReciveFrame->complteFlag = 0;
         SendData(pSendFrame);  //发送报文
         return FALSE;
     }
@@ -799,6 +867,7 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 			pSendFrame->pBuffer[1]= (0x80 | SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET);
 			pSendFrame->pBuffer[2] = 0;	               //信息体格式0,8/8：Class ID = 8 位整数，Instance ID = 8 位整数
              pSendFrame->len = 3;
+             pReciveFrame->complteFlag = 0;
 			SendData(pSendFrame);             //发送报文
 			return ;
 		}
@@ -813,6 +882,7 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 			pSendFrame->pBuffer[1]= (0x80 | SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET);
 			pSendFrame->pBuffer[2] = 0;	//信息体格式0,8/8：类Class ID = 8 位整数，实例Instance ID = 8 位整数
              pSendFrame->len = 3;
+             pReciveFrame->complteFlag = 0;
 			//发送
 			SendData(pSendFrame);			
 		}
@@ -846,6 +916,7 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 		pSendFrame->pBuffer[1]= (0x80 | SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET);
 		pSendFrame->pBuffer[2] = 0;	//信息体格式0,8/8
          pSendFrame->len = 3;
+         pReciveFrame->complteFlag = 0;
 		SendData(pSendFrame);
 	}
 	else
@@ -855,8 +926,10 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 		pSendFrame->pBuffer[1]= (0x80 | SVC_ERROR_RESPONSE);
 		pSendFrame->pBuffer[2] = ERR_SERVICE_NOT_SUPPORT;
 		pSendFrame->pBuffer[3] = 0x02;
-         pSendFrame->len = 4;
+        pSendFrame->len = 4;
+        pReciveFrame->complteFlag = 0;
 		SendData(pSendFrame);
+        
 		return ;
 	}
 }
@@ -944,7 +1017,7 @@ void  CycleInquireMsgService(struct DefFrameData* pReciveFrame, struct DefFrameD
      out_Data[1] = pReciveFrame->pBuffer[1];
      out_Data[2] = pReciveFrame->pBuffer[2];
      out_Data[3] = pReciveFrame->pBuffer[3];          //保存主站设置的数据
-
+    pReciveFrame->complteFlag = 0;
     if(CycleInquireConnedctionObj.state != 4)	//轮询I/O连接没建立 
 		return ;
 
@@ -1019,8 +1092,23 @@ BOOL DeviceNetReciveCenter(uint16* pID, uint8 * pbuff, uint8 len)
             DeviceNetReciveFrame.pBuffer[i] = pbuff[i];
         }
          DeviceNetReciveFrame.complteFlag = 0xff;
+         
+         
+         switch(WorkMode)
+        {
+            case MODE_NORMAL: //正常工作模式
+            {
+                CANFrameFilter(&DeviceNetReciveFrame, &DeviceNetSendFrame);
+                break;
+            }        
+        }
+         DeviceNetReciveFrame.complteFlag = 0;// 默认此处处理完成
          return TRUE;
     }
+    
+    
+    
+    
     return 0;
 }
 /*******************************************************************************

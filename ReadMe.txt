@@ -1,3 +1,6 @@
+2017/3/12
+  1. C1RX0CONbits.RXFUL = 1; //解决未清0溢出问题
+2.  pReciveFrame->completeFlag 未清空错误
 2017/3/10
 1.添加CAN驱动与DeviceNet结合部分
 2.重新考虑波特率设置，调节传输设置。

@@ -86,98 +86,98 @@ ${OBJECTDIR}/DeviceNet/DeviceNet.o: DeviceNet/DeviceNet.c  nbproject/Makefile-${
 	@${MKDIR} "${OBJECTDIR}/DeviceNet" 
 	@${RM} ${OBJECTDIR}/DeviceNet/DeviceNet.o.d 
 	@${RM} ${OBJECTDIR}/DeviceNet/DeviceNet.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceNet/DeviceNet.c  -o ${OBJECTDIR}/DeviceNet/DeviceNet.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceNet/DeviceNet.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceNet/DeviceNet.c  -o ${OBJECTDIR}/DeviceNet/DeviceNet.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceNet/DeviceNet.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/DeviceNet/DeviceNet.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/Action.o: Action.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Action.o.d 
 	@${RM} ${OBJECTDIR}/Action.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Action.c  -o ${OBJECTDIR}/Action.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Action.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Action.c  -o ${OBJECTDIR}/Action.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Action.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Action.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/AdcSample.o: AdcSample.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/AdcSample.o.d 
 	@${RM} ${OBJECTDIR}/AdcSample.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  AdcSample.c  -o ${OBJECTDIR}/AdcSample.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/AdcSample.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  AdcSample.c  -o ${OBJECTDIR}/AdcSample.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/AdcSample.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/AdcSample.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/CRC16.o: CRC16.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/CRC16.o.d 
 	@${RM} ${OBJECTDIR}/CRC16.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  CRC16.c  -o ${OBJECTDIR}/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/CRC16.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  CRC16.c  -o ${OBJECTDIR}/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/CRC16.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/CRC16.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/DeviceIO.o: DeviceIO.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/DeviceIO.o.d 
 	@${RM} ${OBJECTDIR}/DeviceIO.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceIO.c  -o ${OBJECTDIR}/DeviceIO.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceIO.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceIO.c  -o ${OBJECTDIR}/DeviceIO.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceIO.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/DeviceIO.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/RtuFrame.o: RtuFrame.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/RtuFrame.o.d 
 	@${RM} ${OBJECTDIR}/RtuFrame.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  RtuFrame.c  -o ${OBJECTDIR}/RtuFrame.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/RtuFrame.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  RtuFrame.c  -o ${OBJECTDIR}/RtuFrame.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/RtuFrame.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/RtuFrame.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/SwtichCondition.o: SwtichCondition.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/SwtichCondition.o.d 
 	@${RM} ${OBJECTDIR}/SwtichCondition.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  SwtichCondition.c  -o ${OBJECTDIR}/SwtichCondition.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/SwtichCondition.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  SwtichCondition.c  -o ${OBJECTDIR}/SwtichCondition.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/SwtichCondition.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/SwtichCondition.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/Timer.o: Timer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Timer.o.d 
 	@${RM} ${OBJECTDIR}/Timer.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Timer.c  -o ${OBJECTDIR}/Timer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Timer.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Timer.c  -o ${OBJECTDIR}/Timer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Timer.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Timer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/Usart.o: Usart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Usart.o.d 
 	@${RM} ${OBJECTDIR}/Usart.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Usart.c  -o ${OBJECTDIR}/Usart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Usart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Usart.c  -o ${OBJECTDIR}/Usart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Usart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Usart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/traps.o: traps.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/traps.o.d 
 	@${RM} ${OBJECTDIR}/traps.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  traps.c  -o ${OBJECTDIR}/traps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/traps.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  traps.c  -o ${OBJECTDIR}/traps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/traps.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/traps.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/yongci.o: yongci.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/yongci.o.d 
 	@${RM} ${OBJECTDIR}/yongci.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  yongci.c  -o ${OBJECTDIR}/yongci.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/yongci.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  yongci.c  -o ${OBJECTDIR}/yongci.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/yongci.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/yongci.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/DeviceParameter.o: DeviceParameter.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/DeviceParameter.o.d 
 	@${RM} ${OBJECTDIR}/DeviceParameter.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceParameter.c  -o ${OBJECTDIR}/DeviceParameter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceParameter.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceParameter.c  -o ${OBJECTDIR}/DeviceParameter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceParameter.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/DeviceParameter.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/CAN.o: CAN.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/CAN.o.d 
 	@${RM} ${OBJECTDIR}/CAN.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  CAN.c  -o ${OBJECTDIR}/CAN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/CAN.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  CAN.c  -o ${OBJECTDIR}/CAN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/CAN.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/CAN.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
@@ -185,98 +185,98 @@ ${OBJECTDIR}/DeviceNet/DeviceNet.o: DeviceNet/DeviceNet.c  nbproject/Makefile-${
 	@${MKDIR} "${OBJECTDIR}/DeviceNet" 
 	@${RM} ${OBJECTDIR}/DeviceNet/DeviceNet.o.d 
 	@${RM} ${OBJECTDIR}/DeviceNet/DeviceNet.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceNet/DeviceNet.c  -o ${OBJECTDIR}/DeviceNet/DeviceNet.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceNet/DeviceNet.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceNet/DeviceNet.c  -o ${OBJECTDIR}/DeviceNet/DeviceNet.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceNet/DeviceNet.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/DeviceNet/DeviceNet.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/Action.o: Action.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Action.o.d 
 	@${RM} ${OBJECTDIR}/Action.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Action.c  -o ${OBJECTDIR}/Action.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Action.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Action.c  -o ${OBJECTDIR}/Action.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Action.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Action.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/AdcSample.o: AdcSample.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/AdcSample.o.d 
 	@${RM} ${OBJECTDIR}/AdcSample.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  AdcSample.c  -o ${OBJECTDIR}/AdcSample.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/AdcSample.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  AdcSample.c  -o ${OBJECTDIR}/AdcSample.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/AdcSample.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/AdcSample.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/CRC16.o: CRC16.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/CRC16.o.d 
 	@${RM} ${OBJECTDIR}/CRC16.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  CRC16.c  -o ${OBJECTDIR}/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/CRC16.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  CRC16.c  -o ${OBJECTDIR}/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/CRC16.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/CRC16.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/DeviceIO.o: DeviceIO.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/DeviceIO.o.d 
 	@${RM} ${OBJECTDIR}/DeviceIO.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceIO.c  -o ${OBJECTDIR}/DeviceIO.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceIO.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceIO.c  -o ${OBJECTDIR}/DeviceIO.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceIO.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/DeviceIO.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/RtuFrame.o: RtuFrame.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/RtuFrame.o.d 
 	@${RM} ${OBJECTDIR}/RtuFrame.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  RtuFrame.c  -o ${OBJECTDIR}/RtuFrame.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/RtuFrame.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  RtuFrame.c  -o ${OBJECTDIR}/RtuFrame.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/RtuFrame.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/RtuFrame.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/SwtichCondition.o: SwtichCondition.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/SwtichCondition.o.d 
 	@${RM} ${OBJECTDIR}/SwtichCondition.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  SwtichCondition.c  -o ${OBJECTDIR}/SwtichCondition.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/SwtichCondition.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  SwtichCondition.c  -o ${OBJECTDIR}/SwtichCondition.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/SwtichCondition.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/SwtichCondition.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/Timer.o: Timer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Timer.o.d 
 	@${RM} ${OBJECTDIR}/Timer.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Timer.c  -o ${OBJECTDIR}/Timer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Timer.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Timer.c  -o ${OBJECTDIR}/Timer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Timer.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Timer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/Usart.o: Usart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Usart.o.d 
 	@${RM} ${OBJECTDIR}/Usart.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Usart.c  -o ${OBJECTDIR}/Usart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Usart.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Usart.c  -o ${OBJECTDIR}/Usart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Usart.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Usart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/traps.o: traps.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/traps.o.d 
 	@${RM} ${OBJECTDIR}/traps.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  traps.c  -o ${OBJECTDIR}/traps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/traps.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  traps.c  -o ${OBJECTDIR}/traps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/traps.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/traps.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/yongci.o: yongci.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/yongci.o.d 
 	@${RM} ${OBJECTDIR}/yongci.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  yongci.c  -o ${OBJECTDIR}/yongci.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/yongci.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  yongci.c  -o ${OBJECTDIR}/yongci.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/yongci.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/yongci.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/DeviceParameter.o: DeviceParameter.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/DeviceParameter.o.d 
 	@${RM} ${OBJECTDIR}/DeviceParameter.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceParameter.c  -o ${OBJECTDIR}/DeviceParameter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceParameter.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  DeviceParameter.c  -o ${OBJECTDIR}/DeviceParameter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/DeviceParameter.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/DeviceParameter.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/CAN.o: CAN.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/CAN.o.d 
 	@${RM} ${OBJECTDIR}/CAN.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  CAN.c  -o ${OBJECTDIR}/CAN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/CAN.o.d"        -g -omf=elf -legacy-libc  -O1 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	${MP_CC} $(MP_EXTRA_CC_PRE)  CAN.c  -o ${OBJECTDIR}/CAN.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/CAN.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/CAN.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
