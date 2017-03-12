@@ -199,7 +199,7 @@ struct DefFrameData
 #define GET_GROUP_NUM(id)  ((((id) >> 9))&0x0003)
 //获取仅组2MAC地址 id为16bit 
 #define GET_GROUP2_MAC(id)   ( (((id) >> 3))&0x003F ) 
-#define GET_GROUP2_FUNCTION(id)  ((id)&0x0003 ) 
+#define GET_GROUP2_FUNCTION(id)  ((id)&0x0007 ) 
 #define GROUP2_MSG 2 //组2报文  
 //生成GROUP1 ID
 #define MAKE_GROUP1_ID( function, mac_id) (DINT)(((function &0x1F)>>6) | (mac_id & 0x3F))

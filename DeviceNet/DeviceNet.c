@@ -83,6 +83,10 @@ void InitDeviceNet()
 	IdentifierObj.version.minor_ver = minor_ver;  //minor_ver = 1;版本
 	IdentifierObj.serialID = serialID;            //serialID = 0x001169BC;;序列号
 	IdentifierObj.product_name = product_name;    //product_name = {8, "ADC4"};产品名称
+    
+    BOOL result = CheckMACID( &DeviceNetReciveFrame, &DeviceNetSendFrame);
+    
+    while(result);
 }
 
 /*******************************************************************************
@@ -666,7 +670,7 @@ BOOL CheckMACID(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFra
                 }
             }
         }
-        sendCount ++;        
+      
     }
     while(++sendCount < 2);
     
@@ -996,7 +1000,7 @@ BOOL DeviceNetReciveCenter(uint16* pID, uint8 * pbuff, uint8 len)
 {   
     BYTE i= 0;
     //判断是否为仅限组2---可以在滤波器设置屏蔽
-    if( GROUP2_MSG != GET_GROUP2_MAC(*pID))  //不是仅限组2报文处理
+    if( ((*pID) & 0x0600) != 0x0400)  //不是仅限组2报文处理
 	{       
         return FALSE;    
     }        
@@ -1028,6 +1032,7 @@ BOOL DeviceNetReciveCenter(uint16* pID, uint8 * pbuff, uint8 len)
 void SendData(struct DefFrameData* pFrame)
 {
      CANSendData(pFrame->ID, pFrame->pBuffer, pFrame->len);
+      pFrame->complteFlag = 0;
 }
 /*******************************************************************************
 * 函数名:	void  StartOverTimer()----根据具体平台需要重新

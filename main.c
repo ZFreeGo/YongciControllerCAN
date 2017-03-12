@@ -182,10 +182,9 @@ int main()
     while(TRUE)
     {
         __delay_ms(500);
-          CANSendData(0x3A, data, 3);   
+         // CANSendData(0x3A, data, 3);   
     }
 
-    
 }
 
   
