@@ -37,7 +37,7 @@ SHORT_STRING  product_name = {8, (unsigned char *)"YongCi"};// 产品名称
 //////////////////////函数申明/////////////////////////////////
 void ResponseMACID(struct DefFrameData* pSendFrame, BYTE config);
 void VisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
-void CycleInquireMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
+static void CycleInquireMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
 void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame);
 
 BOOL IsTimeRemain();    //需要根据具体平台改写
@@ -787,8 +787,8 @@ BOOL CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pS
 {  
     BYTE error = 0; //错误
     BYTE errorAdd = 0; //附加错误描述
-    
-    if((pReciveFrame->pBuffer[4] == 0) || ((pReciveFrame->pBuffer[4] & 0x3F) != 0))   //如果配置字节为0
+    USINT config = pReciveFrame->pBuffer[4];
+    if(config == 0)   //如果配置字节为0
     {	
         pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);      
         pSendFrame->pBuffer[0] = (pReciveFrame->pBuffer[0] & 0x7F);
@@ -796,14 +796,14 @@ BOOL CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pS
         pSendFrame->len = 2;
         pReciveFrame->complteFlag = 0;
         SendData(pSendFrame);
-        return 0;
+        return FALSE;
     }
-    if(pReciveFrame->pBuffer[4] & ~(CYC_INQUIRE | VISIBLE_MSG | 0x04))//不支持的连接，错误响应
+    if(config & ~(CYC_INQUIRE | VISIBLE_MSG | 0x04))//不支持的连接，错误响应
     {
         error = ERR_RES_INAVAIL;
         errorAdd = 0x02;
     }
-    else if(pReciveFrame->pBuffer[4] & DeviceNetObj.assign_info.select)//连接不存在，错误响应
+    else if(config & DeviceNetObj.assign_info.select == 0)//连接不存在，错误响应
     {       
         error = ERR_EXISTED_MODE;
         errorAdd = 0x02;       
@@ -841,10 +841,11 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
         }        
         
 		DeviceNetObj.assign_info.master_MACID = pReciveFrame->pBuffer[5];  //主站告诉从站：主站的地址
-		DeviceNetObj.assign_info.select |= pReciveFrame->pBuffer[4];       //配置字节
+        USINT config = pReciveFrame->pBuffer[4];
+		DeviceNetObj.assign_info.select |= config;       //配置字节
         
 
-		if(pReciveFrame->pBuffer[4] & CYC_INQUIRE)                          //分配I/O轮询连接
+		if(config & CYC_INQUIRE)                          //分配I/O轮询连接
 		{	
 			InitCycleInquireConnectionObj();                       //I/O轮询连接配置函数
 			CycleInquireConnedctionObj.produced_connection_id = MAKE_GROUP1_ID(GROUP1_POLL_STATUS_CYCLER_ACK , DeviceNetObj.MACID) ;//	produced_connection_id ?
@@ -859,7 +860,7 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 			SendData(pSendFrame);             //发送报文
 			return ;
 		}
-		if(pReciveFrame->pBuffer[4] & VISIBLE_MSG)
+		if(config & VISIBLE_MSG)
 		{	
 			InitVisibleConnectionObj();//分配显式信息连接  
 			VisibleConnectionObj.produced_connection_id =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);
@@ -874,7 +875,7 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
 			//发送
 			SendData(pSendFrame);			
 		}
-		if(pReciveFrame->pBuffer[4] & 0x04) //分配位选通连接
+		if(config & 0x04) //分配位选通连接
 		{	
 		
 //			pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);   
@@ -895,16 +896,27 @@ void UnconVisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameDa
             return;
         }
 		//释放连接
-		DeviceNetObj.assign_info.select = pReciveFrame->pBuffer[4];
-		if(pReciveFrame->pBuffer[4] == 0)
-			IdentifierObj.device_state &= ~0x01;	//指示已和主站断开所有连接
+        USINT config = pReciveFrame->pBuffer[4];
+        
+		DeviceNetObj.assign_info.select |= (config^0xff); //取反释放相应的连接
+        if(config & CYC_INQUIRE)    
+        {
+            CycleInquireConnedctionObj.produced_connection_id = 0;
+			CycleInquireConnedctionObj.consumed_connection_id = 0;
+            CycleInquireConnedctionObj.state = STATE_NOT_EXIST ;	
+        }
+        if (config & VISIBLE_MSG)
+        {
+            VisibleConnectionObj.produced_connection_id =  0;
+			VisibleConnectionObj.consumed_connection_id =  0;
+            VisibleConnectionObj.state = STATE_NOT_EXIST ;	
+        }
 		//执行成功响应
 		pSendFrame->ID =  MAKE_GROUP2_ID(GROUP2_VISIBLE_UCN, DeviceNetObj.MACID);   
 		pSendFrame->pBuffer[0] = pReciveFrame->pBuffer[0] & 0x7F;
-		pSendFrame->pBuffer[1]= (0x80 | SVC_AllOCATE_MASTER_SlAVE_CONNECTION_SET);
-		pSendFrame->pBuffer[2] = 0;	//信息体格式0,8/8
-         pSendFrame->len = 3;
-         pReciveFrame->complteFlag = 0;
+		pSendFrame->pBuffer[1]= (0x80 | SVC_RELEASE_GROUP2_IDENTIFIER_SET);		
+        pSendFrame->len = 2;
+        pReciveFrame->complteFlag = 0;
 		SendData(pSendFrame);
 	}
 	else
@@ -998,7 +1010,7 @@ void VisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* p
 ** 形参:	struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame，接收的报文数组 
 ** 返回值:      无 	
 *********************************************************************************/
-void  CycleInquireMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
+static void  CycleInquireMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 {
 	
      out_Data[0] = pReciveFrame->pBuffer[0];

@@ -1,0 +1,19 @@
+build/default/debug/Source/Yongci/SwtichCondition.o:  \
+ Source/Yongci/SwtichCondition.c  \
+Source/Yongci/SwtichCondition.h  \
+ Source/Yongci/../Driver/tydef.h  \
+Source/Yongci/../Header.h  \
+ Source/Yongci/../Driver/tydef.h  \
+Source/Yongci/../Driver/AdcSample.h  \
+ Source/Yongci/../Driver/tydef.h  \
+Source/Yongci/../Driver/DevicdIO.h  \
+ Source/Yongci/../Driver/Usart.h  \
+Source/Yongci/../Driver/Timer.h  \
+ Source/Yongci/../SerialPort/Action.h  \
+ Source/Yongci/../SerialPort/RtuFrame.h  \
+ Source/Yongci/../SerialPort/../Driver/tydef.h  \
+ Source/Yongci/../SerialPort/RtuFrame.h  \
+Source/Yongci/../Yongci/yongci.h  \
+ Source/Yongci/../Yongci/../Driver/tydef.h  \
+ Source/Yongci/../Yongci/SwtichCondition.h  \
+ Source/Yongci/DeviceParameter.h 

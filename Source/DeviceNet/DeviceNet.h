@@ -212,7 +212,7 @@ struct DefFrameData
 #define GET_GROUP2_FUNCTION(id)  ((id)&0x0007 ) 
 #define GROUP2_MSG 2 //组2报文  
 //生成GROUP1 ID
-#define MAKE_GROUP1_ID( function, mac_id) (DINT)(((function &0x1F)>>6) | (mac_id & 0x3F))
+#define MAKE_GROUP1_ID( function, mac_id) (DINT)(((function &0x1F)<<6) | (mac_id & 0x3F))
 //生成GROUP2 ID
 #define MAKE_GROUP2_ID(  function,mac_id)  (DINT)( (0x0400) | ((DINT)(mac_id &0x3F)<<3) | (function & 0x07))
 
