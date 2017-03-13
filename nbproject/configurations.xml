@@ -4,22 +4,20 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <logicalFolder name="f1" displayName="DeviceNet" projectFiles="true">
-        <itemPath>DeviceNet/DeviceNet.h</itemPath>
-      </logicalFolder>
-      <itemPath>Action.h</itemPath>
-      <itemPath>AdcSample.h</itemPath>
-      <itemPath>CRC16.h</itemPath>
-      <itemPath>DevicdIO.h</itemPath>
-      <itemPath>Header.h</itemPath>
-      <itemPath>RtuFrame.h</itemPath>
-      <itemPath>SwtichCondition.h</itemPath>
-      <itemPath>Timer.h</itemPath>
-      <itemPath>Usart.h</itemPath>
-      <itemPath>tydef.h</itemPath>
-      <itemPath>yongci.h</itemPath>
-      <itemPath>DeviceParameter.h</itemPath>
-      <itemPath>CAN.h</itemPath>
+      <itemPath>Source/DeviceNet/DeviceNet.h</itemPath>
+      <itemPath>Source/Driver/AdcSample.h</itemPath>
+      <itemPath>Source/Driver/CAN.h</itemPath>
+      <itemPath>Source/Driver/DevicdIO.h</itemPath>
+      <itemPath>Source/Driver/Timer.h</itemPath>
+      <itemPath>Source/Yongci/DeviceParameter.h</itemPath>
+      <itemPath>Source/Yongci/SwtichCondition.h</itemPath>
+      <itemPath>Source/Yongci/yongci.h</itemPath>
+      <itemPath>Source/Driver/Usart.h</itemPath>
+      <itemPath>Source/Driver/tydef.h</itemPath>
+      <itemPath>Source/SerialPort/Action.h</itemPath>
+      <itemPath>Source/SerialPort/CRC16.h</itemPath>
+      <itemPath>Source/SerialPort/RtuFrame.h</itemPath>
+      <itemPath>Source/Header.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -29,21 +27,27 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="DeviceNet" projectFiles="true">
-        <itemPath>DeviceNet/DeviceNet.c</itemPath>
+        <itemPath>Source/DeviceNet/DeviceNet.c</itemPath>
       </logicalFolder>
-      <itemPath>Action.c</itemPath>
-      <itemPath>AdcSample.c</itemPath>
-      <itemPath>CRC16.c</itemPath>
-      <itemPath>DeviceIO.c</itemPath>
-      <itemPath>RtuFrame.c</itemPath>
-      <itemPath>SwtichCondition.c</itemPath>
-      <itemPath>Timer.c</itemPath>
-      <itemPath>Usart.c</itemPath>
-      <itemPath>main.c</itemPath>
-      <itemPath>traps.c</itemPath>
-      <itemPath>yongci.c</itemPath>
-      <itemPath>DeviceParameter.c</itemPath>
-      <itemPath>CAN.c</itemPath>
+      <logicalFolder name="f3" displayName="Driver" projectFiles="true">
+        <itemPath>Source/Driver/AdcSample.c</itemPath>
+        <itemPath>Source/Driver/CAN.c</itemPath>
+        <itemPath>Source/Driver/DeviceIO.c</itemPath>
+        <itemPath>Source/Driver/Timer.c</itemPath>
+        <itemPath>Source/Driver/Usart.c</itemPath>
+        <itemPath>Source/Driver/traps.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="SerialPort" displayName="SerialPort" projectFiles="true">
+        <itemPath>Source/SerialPort/Action.c</itemPath>
+        <itemPath>Source/SerialPort/CRC16.c</itemPath>
+        <itemPath>Source/SerialPort/RtuFrame.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="Yongci" projectFiles="true">
+        <itemPath>Source/Yongci/DeviceParameter.c</itemPath>
+        <itemPath>Source/Yongci/SwtichCondition.c</itemPath>
+        <itemPath>Source/Yongci/yongci.c</itemPath>
+      </logicalFolder>
+      <itemPath>Source/main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -55,6 +59,11 @@
   <sourceRootList>
     <Elem>.</Elem>
     <Elem>../TestCAN.X</Elem>
+    <Elem>Source/DeviceNet</Elem>
+    <Elem>Source/Driver</Elem>
+    <Elem>Source/SerialPort</Elem>
+    <Elem>Source</Elem>
+    <Elem>Source/Yongci</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
