@@ -202,3 +202,30 @@ void ExecuteFunctioncode(frameRtu* pRtu)
 
 }
 
+
+
+/**
+ * 引用帧服务
+ *
+ * @param  指向处理帧信息内容的指针
+ * @param  数据信息长度
+ * @param  mac id
+ * @bref   对完整帧进行提取判断
+ */
+static void FrameServer(uint8* pData, uint8  len, uint8 mac_id)
+{
+    uint8 id = pData[0];    
+    switch(id)
+    {
+        case 0: //合闸预制
+        {
+            
+            break;
+        }
+        case 1:
+        {
+            break;
+        }
+    
+    }
+}

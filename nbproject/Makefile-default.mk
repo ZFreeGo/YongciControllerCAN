@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Source/DeviceNet/DeviceNet.c Source/Driver/AdcSample.c Source/Driver/CAN.c Source/Driver/DeviceIO.c Source/Driver/Timer.c Source/Driver/Usart.c Source/Driver/traps.c Source/Yongci/DeviceParameter.c Source/Yongci/SwtichCondition.c Source/Yongci/yongci.c Source/main.c Source/SerialPort/Action.c Source/SerialPort/CRC16.c Source/SerialPort/RtuFrame.c
+SOURCEFILES_QUOTED_IF_SPACED=Source/DeviceNet/DeviceNet.c Source/Driver/AdcSample.c Source/Driver/CAN.c Source/Driver/DeviceIO.c Source/Driver/Timer.c Source/Driver/Usart.c Source/Driver/traps.c Source/SerialPort/Action.c Source/SerialPort/CRC16.c Source/SerialPort/RtuFrame.c Source/Yongci/DeviceParameter.c Source/Yongci/SwtichCondition.c Source/Yongci/yongci.c Source/main.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Source/DeviceNet/DeviceNet.o ${OBJECTDIR}/Source/Driver/AdcSample.o ${OBJECTDIR}/Source/Driver/CAN.o ${OBJECTDIR}/Source/Driver/DeviceIO.o ${OBJECTDIR}/Source/Driver/Timer.o ${OBJECTDIR}/Source/Driver/Usart.o ${OBJECTDIR}/Source/Driver/traps.o ${OBJECTDIR}/Source/Yongci/DeviceParameter.o ${OBJECTDIR}/Source/Yongci/SwtichCondition.o ${OBJECTDIR}/Source/Yongci/yongci.o ${OBJECTDIR}/Source/main.o ${OBJECTDIR}/Source/SerialPort/Action.o ${OBJECTDIR}/Source/SerialPort/CRC16.o ${OBJECTDIR}/Source/SerialPort/RtuFrame.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/Source/DeviceNet/DeviceNet.o.d ${OBJECTDIR}/Source/Driver/AdcSample.o.d ${OBJECTDIR}/Source/Driver/CAN.o.d ${OBJECTDIR}/Source/Driver/DeviceIO.o.d ${OBJECTDIR}/Source/Driver/Timer.o.d ${OBJECTDIR}/Source/Driver/Usart.o.d ${OBJECTDIR}/Source/Driver/traps.o.d ${OBJECTDIR}/Source/Yongci/DeviceParameter.o.d ${OBJECTDIR}/Source/Yongci/SwtichCondition.o.d ${OBJECTDIR}/Source/Yongci/yongci.o.d ${OBJECTDIR}/Source/main.o.d ${OBJECTDIR}/Source/SerialPort/Action.o.d ${OBJECTDIR}/Source/SerialPort/CRC16.o.d ${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Source/DeviceNet/DeviceNet.o ${OBJECTDIR}/Source/Driver/AdcSample.o ${OBJECTDIR}/Source/Driver/CAN.o ${OBJECTDIR}/Source/Driver/DeviceIO.o ${OBJECTDIR}/Source/Driver/Timer.o ${OBJECTDIR}/Source/Driver/Usart.o ${OBJECTDIR}/Source/Driver/traps.o ${OBJECTDIR}/Source/SerialPort/Action.o ${OBJECTDIR}/Source/SerialPort/CRC16.o ${OBJECTDIR}/Source/SerialPort/RtuFrame.o ${OBJECTDIR}/Source/Yongci/DeviceParameter.o ${OBJECTDIR}/Source/Yongci/SwtichCondition.o ${OBJECTDIR}/Source/Yongci/yongci.o ${OBJECTDIR}/Source/main.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Source/DeviceNet/DeviceNet.o.d ${OBJECTDIR}/Source/Driver/AdcSample.o.d ${OBJECTDIR}/Source/Driver/CAN.o.d ${OBJECTDIR}/Source/Driver/DeviceIO.o.d ${OBJECTDIR}/Source/Driver/Timer.o.d ${OBJECTDIR}/Source/Driver/Usart.o.d ${OBJECTDIR}/Source/Driver/traps.o.d ${OBJECTDIR}/Source/SerialPort/Action.o.d ${OBJECTDIR}/Source/SerialPort/CRC16.o.d ${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d ${OBJECTDIR}/Source/Yongci/DeviceParameter.o.d ${OBJECTDIR}/Source/Yongci/SwtichCondition.o.d ${OBJECTDIR}/Source/Yongci/yongci.o.d ${OBJECTDIR}/Source/main.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Source/DeviceNet/DeviceNet.o ${OBJECTDIR}/Source/Driver/AdcSample.o ${OBJECTDIR}/Source/Driver/CAN.o ${OBJECTDIR}/Source/Driver/DeviceIO.o ${OBJECTDIR}/Source/Driver/Timer.o ${OBJECTDIR}/Source/Driver/Usart.o ${OBJECTDIR}/Source/Driver/traps.o ${OBJECTDIR}/Source/Yongci/DeviceParameter.o ${OBJECTDIR}/Source/Yongci/SwtichCondition.o ${OBJECTDIR}/Source/Yongci/yongci.o ${OBJECTDIR}/Source/main.o ${OBJECTDIR}/Source/SerialPort/Action.o ${OBJECTDIR}/Source/SerialPort/CRC16.o ${OBJECTDIR}/Source/SerialPort/RtuFrame.o
+OBJECTFILES=${OBJECTDIR}/Source/DeviceNet/DeviceNet.o ${OBJECTDIR}/Source/Driver/AdcSample.o ${OBJECTDIR}/Source/Driver/CAN.o ${OBJECTDIR}/Source/Driver/DeviceIO.o ${OBJECTDIR}/Source/Driver/Timer.o ${OBJECTDIR}/Source/Driver/Usart.o ${OBJECTDIR}/Source/Driver/traps.o ${OBJECTDIR}/Source/SerialPort/Action.o ${OBJECTDIR}/Source/SerialPort/CRC16.o ${OBJECTDIR}/Source/SerialPort/RtuFrame.o ${OBJECTDIR}/Source/Yongci/DeviceParameter.o ${OBJECTDIR}/Source/Yongci/SwtichCondition.o ${OBJECTDIR}/Source/Yongci/yongci.o ${OBJECTDIR}/Source/main.o
 
 # Source Files
-SOURCEFILES=Source/DeviceNet/DeviceNet.c Source/Driver/AdcSample.c Source/Driver/CAN.c Source/Driver/DeviceIO.c Source/Driver/Timer.c Source/Driver/Usart.c Source/Driver/traps.c Source/Yongci/DeviceParameter.c Source/Yongci/SwtichCondition.c Source/Yongci/yongci.c Source/main.c Source/SerialPort/Action.c Source/SerialPort/CRC16.c Source/SerialPort/RtuFrame.c
+SOURCEFILES=Source/DeviceNet/DeviceNet.c Source/Driver/AdcSample.c Source/Driver/CAN.c Source/Driver/DeviceIO.c Source/Driver/Timer.c Source/Driver/Usart.c Source/Driver/traps.c Source/SerialPort/Action.c Source/SerialPort/CRC16.c Source/SerialPort/RtuFrame.c Source/Yongci/DeviceParameter.c Source/Yongci/SwtichCondition.c Source/Yongci/yongci.c Source/main.c
 
 
 CFLAGS=
@@ -131,6 +131,27 @@ ${OBJECTDIR}/Source/Driver/traps.o: Source/Driver/traps.c  nbproject/Makefile-${
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/Driver/traps.c  -o ${OBJECTDIR}/Source/Driver/traps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/Driver/traps.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Source/Driver/traps.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/Source/SerialPort/Action.o: Source/SerialPort/Action.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/Action.o.d 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/Action.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/Action.c  -o ${OBJECTDIR}/Source/SerialPort/Action.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/Action.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/Action.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/Source/SerialPort/CRC16.o: Source/SerialPort/CRC16.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/CRC16.o.d 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/CRC16.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/CRC16.c  -o ${OBJECTDIR}/Source/SerialPort/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/CRC16.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/CRC16.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/Source/SerialPort/RtuFrame.o: Source/SerialPort/RtuFrame.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/RtuFrame.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/RtuFrame.c  -o ${OBJECTDIR}/Source/SerialPort/RtuFrame.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 ${OBJECTDIR}/Source/Yongci/DeviceParameter.o: Source/Yongci/DeviceParameter.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/Source/Yongci" 
 	@${RM} ${OBJECTDIR}/Source/Yongci/DeviceParameter.o.d 
@@ -158,27 +179,6 @@ ${OBJECTDIR}/Source/main.o: Source/main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/Source/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/main.c  -o ${OBJECTDIR}/Source/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/main.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Source/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
-${OBJECTDIR}/Source/SerialPort/Action.o: Source/SerialPort/Action.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/Action.o.d 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/Action.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/Action.c  -o ${OBJECTDIR}/Source/SerialPort/Action.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/Action.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
-	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/Action.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
-${OBJECTDIR}/Source/SerialPort/CRC16.o: Source/SerialPort/CRC16.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/CRC16.o.d 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/CRC16.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/CRC16.c  -o ${OBJECTDIR}/Source/SerialPort/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/CRC16.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
-	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/CRC16.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
-${OBJECTDIR}/Source/SerialPort/RtuFrame.o: Source/SerialPort/RtuFrame.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/RtuFrame.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/RtuFrame.c  -o ${OBJECTDIR}/Source/SerialPort/RtuFrame.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
-	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
 ${OBJECTDIR}/Source/DeviceNet/DeviceNet.o: Source/DeviceNet/DeviceNet.c  nbproject/Makefile-${CND_CONF}.mk
@@ -230,6 +230,27 @@ ${OBJECTDIR}/Source/Driver/traps.o: Source/Driver/traps.c  nbproject/Makefile-${
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/Driver/traps.c  -o ${OBJECTDIR}/Source/Driver/traps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/Driver/traps.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Source/Driver/traps.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/Source/SerialPort/Action.o: Source/SerialPort/Action.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/Action.o.d 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/Action.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/Action.c  -o ${OBJECTDIR}/Source/SerialPort/Action.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/Action.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/Action.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/Source/SerialPort/CRC16.o: Source/SerialPort/CRC16.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/CRC16.o.d 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/CRC16.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/CRC16.c  -o ${OBJECTDIR}/Source/SerialPort/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/CRC16.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/CRC16.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/Source/SerialPort/RtuFrame.o: Source/SerialPort/RtuFrame.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d 
+	@${RM} ${OBJECTDIR}/Source/SerialPort/RtuFrame.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/RtuFrame.c  -o ${OBJECTDIR}/Source/SerialPort/RtuFrame.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
+	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 ${OBJECTDIR}/Source/Yongci/DeviceParameter.o: Source/Yongci/DeviceParameter.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/Source/Yongci" 
 	@${RM} ${OBJECTDIR}/Source/Yongci/DeviceParameter.o.d 
@@ -257,27 +278,6 @@ ${OBJECTDIR}/Source/main.o: Source/main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/Source/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/main.c  -o ${OBJECTDIR}/Source/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/main.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
 	@${FIXDEPS} "${OBJECTDIR}/Source/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
-${OBJECTDIR}/Source/SerialPort/Action.o: Source/SerialPort/Action.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/Action.o.d 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/Action.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/Action.c  -o ${OBJECTDIR}/Source/SerialPort/Action.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/Action.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
-	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/Action.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
-${OBJECTDIR}/Source/SerialPort/CRC16.o: Source/SerialPort/CRC16.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/CRC16.o.d 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/CRC16.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/CRC16.c  -o ${OBJECTDIR}/Source/SerialPort/CRC16.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/CRC16.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
-	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/CRC16.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
-${OBJECTDIR}/Source/SerialPort/RtuFrame.o: Source/SerialPort/RtuFrame.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Source/SerialPort" 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d 
-	@${RM} ${OBJECTDIR}/Source/SerialPort/RtuFrame.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Source/SerialPort/RtuFrame.c  -o ${OBJECTDIR}/Source/SerialPort/RtuFrame.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off   -std=gnu99
-	@${FIXDEPS} "${OBJECTDIR}/Source/SerialPort/RtuFrame.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

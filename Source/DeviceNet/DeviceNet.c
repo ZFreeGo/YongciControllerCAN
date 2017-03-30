@@ -77,7 +77,7 @@ void InitDeviceNet()
     DeviceNetSendFrame.pBuffer = SendBufferData;
   
     //////////初始化DeviceNetObj对象////////////////////////////////
-	DeviceNetObj.MACID =0x02 ;                   //如果跳键没有设置从站地址，默认从站地址0x02            
+	DeviceNetObj.MACID =0x10 ;                   //如果跳键没有设置从站地址，默认从站地址0x02            
 	DeviceNetObj.baudrate = 2;                   //500Kbit/s
 	DeviceNetObj.assign_info.select = 0;         //初始的配置选择字节清零
 	DeviceNetObj.assign_info.master_MACID =0x0A; //默认主站地址，在预定义主从连接建立过程中，主站还会告诉从站：主站的地址
@@ -803,7 +803,7 @@ BOOL CheckReleaseCode(struct DefFrameData* pReciveFrame, struct DefFrameData* pS
         error = ERR_RES_INAVAIL;
         errorAdd = 0x02;
     }
-    else if(config & DeviceNetObj.assign_info.select == 0)//连接不存在，错误响应
+    else if((config & DeviceNetObj.assign_info.select) == 0)//连接不存在，错误响应
     {       
         error = ERR_EXISTED_MODE;
         errorAdd = 0x02;       
@@ -1013,16 +1013,18 @@ void VisibleMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* p
 static void  CycleInquireMsgService(struct DefFrameData* pReciveFrame, struct DefFrameData* pSendFrame)
 {
 	
-     out_Data[0] = pReciveFrame->pBuffer[0];
-     out_Data[1] = pReciveFrame->pBuffer[1];
-     out_Data[2] = pReciveFrame->pBuffer[2];
-     out_Data[3] = pReciveFrame->pBuffer[3];          //保存主站设置的数据
+    out_Data[0] = pReciveFrame->pBuffer[0];
+    out_Data[1] = pReciveFrame->pBuffer[1];
+    out_Data[2] = pReciveFrame->pBuffer[2];
+    out_Data[3] = pReciveFrame->pBuffer[3];          //保存主站设置的数据
     pReciveFrame->complteFlag = 0;
     if(CycleInquireConnedctionObj.state != STATE_LINKED )	//轮询I/O连接没建立 
 		return ;
 
-	//pSendFrame->pBuffer[0] = 0x78 | DeviceNetObj.MACID >> 3;
-	//pSendFrame->pBuffer[1] = DeviceNetObj.MACID << 5;  //发送数组的帧ID
+    
+    
+    
+    
     pSendFrame->ID =  MAKE_GROUP1_ID(GROUP1_POLL_STATUS_CYCLER_ACK, DeviceNetObj.MACID);   
     pSendFrame->pBuffer[0] = 0x1A;
     pSendFrame->pBuffer[1] = 0x2A;
@@ -1091,7 +1093,7 @@ BOOL DeviceNetReciveCenter(uint16* pID, uint8 * pbuff, uint8 len)
         {
             DeviceNetReciveFrame.pBuffer[i] = pbuff[i];
         }
-         DeviceNetReciveFrame.complteFlag = 0xff;
+        DeviceNetReciveFrame.complteFlag = 0xff;
          
          
          switch(WorkMode)
